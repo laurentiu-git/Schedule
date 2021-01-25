@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Schedule</string>
+    <string name="hello">Hello</string>
 </resources>
