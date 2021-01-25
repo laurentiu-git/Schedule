@@ -1,8 +1,8 @@
+
 package com.example.schedule
 
+import org.junit.Assert.* //ktlint-disable
 import org.junit.Test
-
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).
