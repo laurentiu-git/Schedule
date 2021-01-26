@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.FrameLayout
 import com.example.schedule.R
 
-class EntryEvent: FrameLayout {
+class EntryEvent : FrameLayout {
 
     constructor(context: Context) : super(context) {
         init()
