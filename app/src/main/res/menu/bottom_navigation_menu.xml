@@ -4,10 +4,6 @@
         android:title="Home"
         android:icon="@drawable/ic_home" />
 
-    <item android:id="@+id/addFragment"
-        android:title="Add"
-        android:icon="@drawable/ic_add" />
-
     <item android:id="@+id/editFragment"
         android:title="Edit"
         android:icon="@drawable/ic_edit" />
