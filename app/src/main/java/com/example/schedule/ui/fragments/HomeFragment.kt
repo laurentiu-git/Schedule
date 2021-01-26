@@ -14,6 +14,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHomeBinding.bind(view)
+
         binding.addEvent.setOnClickListener{
             val animation = AddEventTransition(binding.addEvent, binding.rvView)
             animation.openCalendar()

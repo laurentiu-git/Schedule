@@ -5,10 +5,9 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class AddEventTransition(private val fabView: FloatingActionButton, private val entryEvent: RecyclerView) {
+class AddEventTransition(private val fabView: FloatingActionButton, private val entryEvent: EntryEvent) {
 
     fun openCalendar() {
 
