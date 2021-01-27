@@ -4,7 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.TextView
 import com.example.schedule.R
 
 class EntryEvent : FrameLayout {
@@ -26,6 +28,11 @@ class EntryEvent : FrameLayout {
         View.inflate(context, R.layout.add_event_fragment, this)
 
         setOnClickListener {
+            entryEvent?.onCloseClicked()
+        }
+
+        val closeElement = findViewById<TextView>(R.id.close)
+        closeElement.setOnClickListener{
             entryEvent?.onCloseClicked()
         }
 
