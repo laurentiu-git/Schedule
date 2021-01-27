@@ -20,7 +20,6 @@
             android:id="@+id/rvView"
             android:layout_width="300dp"
             android:layout_height="300dp"
-            android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -31,8 +30,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="15dp"
-                android:text="New Task"
+                android:layout_marginStart="15dp"
+                android:text="@string/new_task"
                 android:textAlignment="textStart"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -53,7 +52,8 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.254" />
+                app:layout_constraintVertical_bias="0.254"
+                android:autofillHints="@string/title" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -61,7 +61,6 @@
                 android:layout_marginTop="100dp"
                 android:text="@string/cancel"
                 android:id="@+id/cancelBtn"
-                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.1"
@@ -74,7 +73,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
                 android:text="@string/add"
-                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.9"
@@ -86,7 +84,6 @@
                 android:id="@+id/editTextTextMultiLine"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/gray"
                 android:ems="10"
                 android:hint="@string/description"
                 android:inputType="textMultiLine"
