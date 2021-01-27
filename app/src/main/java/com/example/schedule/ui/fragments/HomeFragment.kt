@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.schedule.R
 import com.example.schedule.databinding.FragmentHomeBinding
 import com.example.schedule.ui.transitions.AddEventTransition
-import com.example.schedule.ui.transitions.EntryEvent
 import com.example.schedule.ui.transitions.EntryEventListener
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -26,19 +25,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             animation.openCalendar()
         }
 
-        binding.entryEvent.setAddEventListener(object: EntryEventListener {
-            override fun onCloseClicked() {
-                val animation = AddEventTransition(binding.addEvent, binding.entryEvent)
-                animation.closeCalendar()
+        binding.entryEvent.setAddEventListener(
+            object : EntryEventListener {
+                override fun onCloseClicked() {
+                    val animation = AddEventTransition(binding.addEvent, binding.entryEvent)
+                    animation.closeCalendar()
+                }
             }
-
-        })
+        )
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (!binding.entryEvent.isVisible) {
                     if (!findNavController().navigateUp()) {
-                        //nothing left in back stack we can finish the activity
+                        // nothing left in back stack we can finish the activity
                         requireActivity().finish()
                     }
                 } else {
@@ -46,7 +46,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     animation.closeCalendar()
                 }
             }
-
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
