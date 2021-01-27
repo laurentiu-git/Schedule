@@ -20,15 +20,15 @@ class AddEventTransition(private val fabView: FloatingActionButton, private val 
         val moveFabAnimation = AnimatorSet()
         moveFabAnimation.playTogether(translateX, translateY)
         moveFabAnimation.addListener(
-            object:AnimatorListenerAdapter(){
+            object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator?) {
                     fabView.visibility = View.INVISIBLE
                 }
             }
         )
 
-        // make calendar visible
-        // grow calendar to full size
+        // make add layout visible
+        // grow add layout to full size
         val scaleUpX = ObjectAnimator.ofFloat(entryEvent, View.SCALE_X, 0f, 1f)
         val scaleUpY = ObjectAnimator.ofFloat(entryEvent, View.SCALE_Y, 0f, 1f)
         val growCalAnimation = AnimatorSet()
