@@ -34,6 +34,10 @@ class EntryEvent : FrameLayout {
             entryEvent?.onCloseClicked()
         }
 
+        setOnClickListener {
+            entryEvent?.onCloseClicked()
+        }
+
     }
 
     fun setAddEventListener(entryEventListener: EntryEventListener) {

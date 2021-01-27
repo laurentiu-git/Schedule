@@ -57,6 +57,7 @@ class AddEventTransition(private val fabView: FloatingActionButton, private val 
             object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator?) {
                     entryEvent.visibility = View.INVISIBLE
+                    fabView.visibility = View.VISIBLE
                 }
             }
         )
