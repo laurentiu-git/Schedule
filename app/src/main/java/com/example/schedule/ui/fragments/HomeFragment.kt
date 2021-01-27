@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import com.example.schedule.R
 import com.example.schedule.databinding.FragmentHomeBinding
 import com.example.schedule.ui.transitions.AddEventTransition
+import com.example.schedule.ui.transitions.EntryEvent
+import com.example.schedule.ui.transitions.EntryEventListener
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -16,9 +18,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val binding = FragmentHomeBinding.bind(view)
 
         binding.addEvent.setOnClickListener {
-            val animation = AddEventTransition(binding.addEvent, binding.rvView)
+            val animation = AddEventTransition(binding.addEvent, binding.entryEvent)
             animation.openCalendar()
         }
+
+        binding.entryEvent.setAddEventListener(object: EntryEventListener {
+            override fun onCloseClicked() {
+                val animation = AddEventTransition(binding.addEvent, binding.entryEvent)
+                animation.closeCalendar()
+            }
+
+        })
     }
 
     override fun onDestroyView() {
