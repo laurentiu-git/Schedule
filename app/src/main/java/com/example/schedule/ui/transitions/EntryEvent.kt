@@ -25,15 +25,10 @@ class EntryEvent : FrameLayout {
     private fun init() {
         View.inflate(context, R.layout.add_event_fragment, this)
 
-        val cancelBtn = findViewById<Button>(R.id.cancelBtn)
-
-        cancelBtn.setOnClickListener {
-            entryEvent?.onCloseClicked()
-        }
-
         setOnClickListener {
             entryEvent?.onCloseClicked()
         }
+
     }
 
     fun setAddEventListener(entryEventListener: EntryEventListener) {
