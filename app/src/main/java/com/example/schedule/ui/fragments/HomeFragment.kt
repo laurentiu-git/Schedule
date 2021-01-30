@@ -7,11 +7,15 @@ import android.widget.DatePicker
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.example.schedule.R
 import com.example.schedule.databinding.FragmentHomeBinding
 import com.example.schedule.ui.transitions.AddEventTransition
 import com.example.schedule.ui.transitions.EntryEventListener
+import com.example.schedule.util.Resource
+import com.example.schedule.viewmodels.HomeScheduleViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.* //ktlint-disable
@@ -21,17 +25,22 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
 
     private var fragmentBinding: FragmentHomeBinding? = null
     lateinit var binding: FragmentHomeBinding
+    lateinit var homeScheduleViewModel : HomeScheduleViewModel
+
     var day = 0
     var month = 0
     var year = 0
-    private var previousDay = -1;
-    private var nextDay = 1;
-    val cal = Calendar.getInstance()
-
+    private var previousDay = -1
+    private var nextDay = 1
+    private val cal = Calendar.getInstance()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
+        fragmentBinding = binding
+
+        homeScheduleViewModel = ViewModelProvider(requireActivity()).get(HomeScheduleViewModel::class.java)
+
 
         binding.addEvent.setOnClickListener {
             val animation = AddEventTransition(binding.addEvent, binding.entryEvent)
@@ -67,9 +76,17 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         }
 
         binding.arrowLeft.setOnClickListener {
-            cal.add(Calendar.DATE, previousDay)
-            var dateFromat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-            binding.dayId.text = dateFromat.format(cal.time)
+         //   cal.add(Calendar.DATE, previousDay)
+       //     var dateFromat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+          //  binding.dayId.text = dateFromat.format(cal.time)
+        }
+
+        homeScheduleViewModel.day.observe(viewLifecycleOwner) {
+            response -> when (response) {
+            is Resource.Success -> {
+                binding.dayId.text = response.data
+             }
+            }
         }
 
         binding.arrowRight.setOnClickListener {
@@ -97,6 +114,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         cal.set(year, month, dayOfMonth)
-        binding.dayId.text = "$dayOfMonth-${month+1}-$year"
+        binding.dayId.text = "$dayOfMonth-${month + 1}-$year"
     }
 }

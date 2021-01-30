@@ -20,9 +20,9 @@ class EntryEvent : FrameLayout {
 
     private var entryEvent: EntryEventListener? = null
     @Inject
-     lateinit var timeAdapter: TimeAdapter
+    lateinit var timeAdapter: TimeAdapter
     @Inject
-     lateinit var minutesAdapter: TimeAdapter
+    lateinit var minutesAdapter: TimeAdapter
 
     private val list = mutableListOf("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24")
     private val listMinutes = mutableListOf(

@@ -4,6 +4,5 @@ import javax.inject.Inject
 
 class ScheduleItemsRepository @Inject constructor() {
 
-    suspend fun getScheduleItems() = "today"
-
+    suspend fun getScheduleItems() = "Yolo"
 }

@@ -9,13 +9,13 @@ import com.example.schedule.util.Resource
 import kotlinx.coroutines.launch
 
 class HomeScheduleViewModel @ViewModelInject constructor(
-        private val scheduleItemsItemsRepository: ScheduleItemsRepository
+    private val scheduleItemsItemsRepository: ScheduleItemsRepository
 ) : ViewModel() {
 
     val day: MutableLiveData<Resource<String>> = MutableLiveData()
 
-    init{
-       getDay()
+    init {
+        getDay()
     }
 
     private fun getDay() = viewModelScope.launch {
@@ -25,12 +25,10 @@ class HomeScheduleViewModel @ViewModelInject constructor(
     }
 
     private fun scheduleItemsResponse(response: String): Resource<String>? {
-        if (response == "today") {
+        if (response == "Yolo") {
             return Resource.Success(response)
         }
 
         return Resource.Error("some error")
     }
-
-
 }
