@@ -12,20 +12,20 @@ class HomeScheduleViewModel @ViewModelInject constructor(
     private val scheduleItemsItemsRepository: ScheduleItemsRepository
 ) : ViewModel() {
 
-    val day: MutableLiveData<Resource<String>> = MutableLiveData()
+    val daySchedule: MutableLiveData<Resource<String>> = MutableLiveData()
 
     init {
         getDay()
     }
 
     private fun getDay() = viewModelScope.launch {
-        day.postValue(Resource.Loading())
+        daySchedule.postValue(Resource.Loading())
         val response = scheduleItemsItemsRepository.getScheduleItems()
-        day.postValue(scheduleItemsResponse(response))
+        daySchedule.postValue(scheduleItemsResponse(response))
     }
 
     private fun scheduleItemsResponse(response: String): Resource<String>? {
-        if (response == "Yolo") {
+        if (response == "Yolo" || response == "30-01-2021") {
             return Resource.Success(response)
         }
 

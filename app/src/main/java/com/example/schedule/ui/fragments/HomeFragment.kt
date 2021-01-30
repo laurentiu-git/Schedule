@@ -27,11 +27,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     lateinit var binding: FragmentHomeBinding
     lateinit var homeScheduleViewModel : HomeScheduleViewModel
 
-    var day = 0
-    var month = 0
-    var year = 0
-    private var previousDay = -1
-    private var nextDay = 1
     private val cal = Calendar.getInstance()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,44 +71,44 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         }
 
         binding.arrowLeft.setOnClickListener {
-         //   cal.add(Calendar.DATE, previousDay)
-       //     var dateFromat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-          //  binding.dayId.text = dateFromat.format(cal.time)
+             val previousDay = -1
+             binding.dayId.text = getDay(previousDay)
         }
 
-        homeScheduleViewModel.day.observe(viewLifecycleOwner) {
+        homeScheduleViewModel.daySchedule.observe(viewLifecycleOwner) {
             response -> when (response) {
             is Resource.Success -> {
-                binding.dayId.text = response.data
+            //    binding.dayId.text = response.data
              }
             }
         }
 
         binding.arrowRight.setOnClickListener {
-            cal.add(Calendar.DATE, nextDay)
-            var dateFromat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-            binding.dayId.text = dateFromat.format(cal.time)
+            val nextDay = 1
+            binding.dayId.text = getDay(nextDay)
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        fragmentBinding = null
-    }
-
     private fun pickDate(view: View) {
-        getDateCalendar()
+        val year = cal.get(Calendar.YEAR)
+        val month = cal.get(Calendar.MONTH)
+        val day = cal.get(Calendar.DAY_OF_MONTH)
         DatePickerDialog(view.context, this, year, month, day).show()
-    }
-
-    private fun getDateCalendar() {
-        day = cal.get(Calendar.DAY_OF_MONTH)
-        month = cal.get(Calendar.MONTH)
-        year = cal.get(Calendar.YEAR)
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         cal.set(year, month, dayOfMonth)
         binding.dayId.text = "$dayOfMonth-${month + 1}-$year"
+    }
+
+    private fun getDay(position : Int): String {
+        cal.add(Calendar.DATE, position)
+        val dateFromat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        return dateFromat.format(cal.time)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        fragmentBinding = null
     }
 }
