@@ -41,6 +41,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:background="@null"
+            android:id="@+id/arrowDown"
             android:src="@drawable/ic_arrow_down"
             app:layout_constraintBottom_toBottomOf="@+id/dayId"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,6 +54,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:background="@null"
+            android:id="@+id/arrowLeft"
             android:src="@drawable/ic_arrow_left"
             app:layout_constraintBottom_toBottomOf="@+id/dayId"
             app:layout_constraintEnd_toStartOf="@+id/dayId"
@@ -62,7 +64,7 @@
             app:layout_constraintVertical_bias="1.0" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/arrowRight"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:background="@null"

@@ -12,6 +12,7 @@ import com.example.schedule.R
 import com.example.schedule.databinding.FragmentHomeBinding
 import com.example.schedule.ui.transitions.AddEventTransition
 import com.example.schedule.ui.transitions.EntryEventListener
+import java.text.SimpleDateFormat
 import java.util.* //ktlint-disable
 
 class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSetListener {
@@ -21,6 +22,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     var day = 0
     var month = 0
     var year = 0
+    private var previousDay = 0;
+    private var nextDay = 0;
 
     var savedDay = 0
     var savedMonth = 0
@@ -62,6 +65,22 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         binding.dayId.setOnClickListener {
             pickDate(it)
         }
+
+        binding.arrowLeft.setOnClickListener {
+            val cal = getDateCalendar()
+            previousDay -= 1
+            cal.add(Calendar.DATE, previousDay)
+            var dateFromat = SimpleDateFormat("dd MM yyyy", Locale.getDefault())
+            binding.dayId.text = dateFromat.format(cal.time)
+        }
+
+        binding.arrowRight.setOnClickListener {
+            val cal = getDateCalendar()
+            nextDay += 1
+            cal.add(Calendar.DATE, nextDay)
+            var dateFromat = SimpleDateFormat("dd MM yyyy", Locale.getDefault())
+            binding.dayId.text = dateFromat.format(cal.time)
+        }
     }
 
     override fun onDestroyView() {
@@ -74,11 +93,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         DatePickerDialog(view.context, this, year, month, day).show()
     }
 
-    private fun getDateCalendar() {
+    private fun getDateCalendar(): Calendar {
         val cal: Calendar = Calendar.getInstance()
         day = cal.get(Calendar.DAY_OF_MONTH)
         month = cal.get(Calendar.MONTH)
         year = cal.get(Calendar.YEAR)
+        return cal
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
