@@ -10,8 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.schedule.R
 import com.example.schedule.databinding.FragmentHomeBinding
+import com.example.schedule.ui.adapters.ScheduleAdapter
 import com.example.schedule.ui.transitions.AddEventTransition
 import com.example.schedule.ui.transitions.EntryEventListener
 import com.example.schedule.util.Resource
@@ -19,6 +21,7 @@ import com.example.schedule.viewmodels.HomeScheduleViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.* //ktlint-disable
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSetListener {
@@ -26,6 +29,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     private var fragmentBinding: FragmentHomeBinding? = null
     lateinit var binding: FragmentHomeBinding
     lateinit var homeScheduleViewModel : HomeScheduleViewModel
+    @Inject
+    lateinit var scheduleAdapter: ScheduleAdapter
 
     private val cal = Calendar.getInstance()
 
@@ -36,6 +41,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
 
         homeScheduleViewModel = ViewModelProvider(requireActivity()).get(HomeScheduleViewModel::class.java)
 
+        setupRecyclerView()
 
         binding.addEvent.setOnClickListener {
             val animation = AddEventTransition(binding.addEvent, binding.entryEvent)
@@ -75,17 +81,26 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
              binding.dayId.text = getDay(previousDay)
         }
 
-        homeScheduleViewModel.daySchedule.observe(viewLifecycleOwner) {
-            response -> when (response) {
-            is Resource.Success -> {
-            //    binding.dayId.text = response.data
-             }
+        homeScheduleViewModel.getSchedule().observe(
+            viewLifecycleOwner,
+            androidx.lifecycle.Observer {
+                result ->
+                scheduleAdapter.differ.submitList(result)
             }
-        }
+        )
+
+
 
         binding.arrowRight.setOnClickListener {
             val nextDay = 1
             binding.dayId.text = getDay(nextDay)
+        }
+    }
+
+    private fun setupRecyclerView() {
+        binding.homeRecyclerView.apply {
+            adapter = scheduleAdapter
+            layoutManager = LinearLayoutManager(activity)
         }
     }
 
@@ -106,6 +121,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         val dateFromat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         return dateFromat.format(cal.time)
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

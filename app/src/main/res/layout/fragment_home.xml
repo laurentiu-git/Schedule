@@ -88,6 +88,12 @@
             app:layout_constraintTop_toBottomOf="@id/dayId"
             app:layout_constraintVertical_bias="0.0" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/homeRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/dayId" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

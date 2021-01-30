@@ -24,6 +24,8 @@ class HomeScheduleViewModel @ViewModelInject constructor(
         daySchedule.postValue(scheduleItemsResponse(response))
     }
 
+    fun getSchedule() = scheduleItemsItemsRepository.getSchedules()
+
     private fun scheduleItemsResponse(response: String): Resource<String>? {
         if (response == "Yolo" || response == "30-01-2021") {
             return Resource.Success(response)
