@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -38,10 +39,10 @@
             app:layout_constraintVertical_bias="0.025" />
 
         <ImageButton
+            android:id="@+id/arrowDown"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:background="@null"
-            android:id="@+id/arrowDown"
             android:src="@drawable/ic_arrow_down"
             app:layout_constraintBottom_toBottomOf="@+id/dayId"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,10 +52,10 @@
             app:layout_constraintVertical_bias="1" />
 
         <ImageButton
+            android:id="@+id/arrowLeft"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:background="@null"
-            android:id="@+id/arrowLeft"
             android:src="@drawable/ic_arrow_left"
             app:layout_constraintBottom_toBottomOf="@+id/dayId"
             app:layout_constraintEnd_toStartOf="@+id/dayId"
@@ -77,22 +78,26 @@
 
         <com.example.schedule.ui.transitions.EntryEvent
             android:id="@+id/entryEvent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:visibility="invisible"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            android:elevation="12dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dayId"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/dayId"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/homeRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/dayId" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dayId"  />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

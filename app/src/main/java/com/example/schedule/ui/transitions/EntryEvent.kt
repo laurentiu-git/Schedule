@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.R
+import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.ui.adapters.TimeAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.* //ktlint-disable
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -29,6 +31,8 @@ class EntryEvent : FrameLayout {
         "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53",
         "54", "55", "56", "57", "58", "59"
     )
+
+    val calendar = Calendar.getInstance()
 
     constructor(context: Context) : super(context) {
         init()
@@ -76,9 +80,22 @@ class EntryEvent : FrameLayout {
             adapter = minutesAdapter
             layoutManager = LinearLayoutManager(context)
         }
-        recyclerView.isNestedScrollingEnabled = false
+
         recyclerViewMinutes.scrollToPosition(Integer.MAX_VALUE / 2)
         LinearSnapHelper().attachToRecyclerView(recyclerViewMinutes)
+
+        val title = findViewById<EditText>(R.id.titleText)
+        val description = findViewById<EditText>(R.id.description)
+
+        val addBtn = findViewById<Button>(R.id.button)
+        addBtn.setOnClickListener {
+            val year = calendar.get(Calendar.YEAR).toString()
+            val month = calendar.get(Calendar.MONTH).toString()
+            val day = calendar.get(Calendar.DAY_OF_MONTH).toString()
+            val hour = "15-30"
+            val schedule = ScheduleInfo(null, year, month, day, hour, title.text.toString(), description.text.toString())
+            entryEvent?.addSchedule(schedule)
+        }
     }
 
     fun setAddEventListener(entryEventListener: EntryEventListener) {
@@ -94,6 +111,6 @@ class EntryEvent : FrameLayout {
 }
 
 interface EntryEventListener {
-
     fun onCloseClicked()
+    fun addSchedule(schedule: ScheduleInfo)
 }

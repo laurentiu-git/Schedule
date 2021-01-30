@@ -25,7 +25,7 @@ class HomeScheduleViewModel @ViewModelInject constructor(
         daySchedule.postValue(scheduleItemsResponse(response))
     }
 
-     fun updateAndReplace(schedule: ScheduleInfo) = viewModelScope.launch {
+    fun updateAndReplace(schedule: ScheduleInfo) = viewModelScope.launch {
         scheduleItemsItemsRepository.updateAndReplace(schedule)
     }
 

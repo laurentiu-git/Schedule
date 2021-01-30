@@ -1,12 +1,12 @@
 package com.example.schedule.data.local
 
 import android.content.Context
-import androidx.room.*
+import androidx.room.* //ktlint-disable
 import com.example.schedule.data.models.ScheduleInfo
 
 @Database(
-        entities = [ScheduleInfo::class],
-        version = 2
+    entities = [ScheduleInfo::class],
+    version = 1
 )
 
 abstract class ScheduleDatabase : RoomDatabase() {
@@ -25,10 +25,10 @@ abstract class ScheduleDatabase : RoomDatabase() {
         }
 
         private fun createDatabase(context: Context) =
-                Room.databaseBuilder(
-                        context,
-                        ScheduleDatabase::class.java,
-                        "scheduledb.db"
-                ).build()
+            Room.databaseBuilder(
+                context,
+                ScheduleDatabase::class.java,
+                "scheduledb.db"
+            ).build()
     }
 }

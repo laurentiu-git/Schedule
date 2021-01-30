@@ -5,7 +5,7 @@ import com.example.schedule.data.models.ScheduleInfo
 import javax.inject.Inject
 
 class ScheduleItemsRepository @Inject constructor(
-        val db: ScheduleDatabase
+    val db: ScheduleDatabase
 ) {
 
     suspend fun getScheduleItems() = "Yolo"
@@ -15,6 +15,4 @@ class ScheduleItemsRepository @Inject constructor(
     suspend fun deleteSchedule(schedule: ScheduleInfo) = db.getScheduleDao().deleteResult(schedule)
 
     fun getSchedules() = db.getScheduleDao().getSchedule()
-
-
 }
