@@ -12,12 +12,17 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.R
 import com.example.schedule.ui.adapters.TimeAdapter
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class EntryEvent : FrameLayout {
 
     private var entryEvent: EntryEventListener? = null
-    private lateinit var timeAdapter: TimeAdapter
-    private lateinit var minutesAdapter: TimeAdapter
+    @Inject
+     lateinit var timeAdapter: TimeAdapter
+    @Inject
+     lateinit var minutesAdapter: TimeAdapter
 
     private val list = mutableListOf("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24")
     private val listMinutes = mutableListOf(
@@ -56,7 +61,6 @@ class EntryEvent : FrameLayout {
         val recyclerView = findViewById<RecyclerView>(R.id.hourList)
         val recyclerViewMinutes = findViewById<RecyclerView>(R.id.minutesList)
 
-        timeAdapter = TimeAdapter()
         timeAdapter.differ.submitList(list)
 
         recyclerView.apply {
@@ -66,7 +70,6 @@ class EntryEvent : FrameLayout {
         recyclerView.scrollToPosition(Integer.MAX_VALUE / 2)
         LinearSnapHelper().attachToRecyclerView(recyclerView)
 
-        minutesAdapter = TimeAdapter()
         minutesAdapter.differ.submitList(listMinutes)
 
         recyclerViewMinutes.apply {

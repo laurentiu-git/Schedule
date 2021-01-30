@@ -12,9 +12,11 @@ import com.example.schedule.R
 import com.example.schedule.databinding.FragmentHomeBinding
 import com.example.schedule.ui.transitions.AddEventTransition
 import com.example.schedule.ui.transitions.EntryEventListener
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.* //ktlint-disable
 
+@AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSetListener {
 
     private var fragmentBinding: FragmentHomeBinding? = null
@@ -22,12 +24,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     var day = 0
     var month = 0
     var year = 0
-    private var previousDay = 0;
-    private var nextDay = 0;
+    private var previousDay = -1;
+    private var nextDay = 1;
+    val cal = Calendar.getInstance()
 
-    var savedDay = 0
-    var savedMonth = 0
-    var savedYear = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -67,18 +67,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         }
 
         binding.arrowLeft.setOnClickListener {
-            val cal = getDateCalendar()
-            previousDay -= 1
             cal.add(Calendar.DATE, previousDay)
-            var dateFromat = SimpleDateFormat("dd MM yyyy", Locale.getDefault())
+            var dateFromat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
             binding.dayId.text = dateFromat.format(cal.time)
         }
 
         binding.arrowRight.setOnClickListener {
-            val cal = getDateCalendar()
-            nextDay += 1
             cal.add(Calendar.DATE, nextDay)
-            var dateFromat = SimpleDateFormat("dd MM yyyy", Locale.getDefault())
+            var dateFromat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
             binding.dayId.text = dateFromat.format(cal.time)
         }
     }
@@ -93,20 +89,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         DatePickerDialog(view.context, this, year, month, day).show()
     }
 
-    private fun getDateCalendar(): Calendar {
-        val cal: Calendar = Calendar.getInstance()
+    private fun getDateCalendar() {
         day = cal.get(Calendar.DAY_OF_MONTH)
         month = cal.get(Calendar.MONTH)
         year = cal.get(Calendar.YEAR)
-        return cal
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        savedDay = dayOfMonth
-        savedMonth = month + 1
-        savedYear = year
-
-        getDateCalendar()
-        binding.dayId.text = "$savedDay-$savedMonth-$savedYear"
+        cal.set(year, month, dayOfMonth)
+        binding.dayId.text = "$dayOfMonth-${month+1}-$year"
     }
 }

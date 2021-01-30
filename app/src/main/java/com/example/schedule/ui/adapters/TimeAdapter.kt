@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.R
+import javax.inject.Inject
 
-class TimeAdapter : RecyclerView.Adapter<TimeAdapter.TimeAdapterViewHolder>() {
+class TimeAdapter @Inject constructor() : RecyclerView.Adapter<TimeAdapter.TimeAdapterViewHolder>() {
 
     inner class TimeAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
