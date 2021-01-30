@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.schedule.R
+import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.databinding.FragmentHomeBinding
 import com.example.schedule.ui.adapters.ScheduleAdapter
 import com.example.schedule.ui.transitions.AddEventTransition

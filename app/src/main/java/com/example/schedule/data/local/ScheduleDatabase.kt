@@ -6,7 +6,7 @@ import com.example.schedule.data.models.ScheduleInfo
 
 @Database(
         entities = [ScheduleInfo::class],
-        version = 1
+        version = 2
 )
 
 abstract class ScheduleDatabase : RoomDatabase() {

@@ -4,6 +4,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.repository.ScheduleItemsRepository
 import com.example.schedule.util.Resource
 import kotlinx.coroutines.launch
@@ -22,6 +23,10 @@ class HomeScheduleViewModel @ViewModelInject constructor(
         daySchedule.postValue(Resource.Loading())
         val response = scheduleItemsItemsRepository.getScheduleItems()
         daySchedule.postValue(scheduleItemsResponse(response))
+    }
+
+     fun updateAndReplace(schedule: ScheduleInfo) = viewModelScope.launch {
+        scheduleItemsItemsRepository.updateAndReplace(schedule)
     }
 
     fun getSchedule() = scheduleItemsItemsRepository.getSchedules()

@@ -38,7 +38,7 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
     override fun onBindViewHolder(holder: TimeAdapterViewHolder, position: Int) {
         holder.itemView.apply {
             val text = findViewById<TextView>(R.id.timeText)
-            text.text = differ.currentList[position].hour
+            text.text = differ.currentList[position].year
         }
     }
 
