@@ -6,4 +6,5 @@
     <string name="add">Add</string>
     <string name="title">Title</string>
     <string name="new_task">New Task</string>
+    <string name="today">Today</string>
 </resources>
