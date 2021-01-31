@@ -18,7 +18,6 @@ import com.example.schedule.ui.adapters.ScheduleAdapter
 import com.example.schedule.ui.transitions.AddEventTransition
 import com.example.schedule.ui.transitions.EntryEventListener
 import com.example.schedule.viewmodels.HomeScheduleViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationMenu
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -46,7 +45,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         setupRecyclerView()
         var bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
-
         binding.addEvent.setOnClickListener {
             val animation = AddEventTransition(binding.addEvent, binding.entryEvent)
             animation.openCalendar()
@@ -65,8 +63,15 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                     val year = cal.get(Calendar.YEAR).toString()
                     val month = cal.get(Calendar.MONTH).toString()
                     val day = cal.get(Calendar.DAY_OF_MONTH).toString()
-                    val scheduleInfo = ScheduleInfo(null, year, month,
-                            day, schedule.hour,  schedule.taskName, schedule.description)
+                    val scheduleInfo = ScheduleInfo(
+                        null,
+                        year,
+                        month,
+                        day,
+                        schedule.hour,
+                        schedule.taskName,
+                        schedule.description
+                    )
                     homeScheduleViewModel.updateAndReplace(scheduleInfo)
                 }
             }

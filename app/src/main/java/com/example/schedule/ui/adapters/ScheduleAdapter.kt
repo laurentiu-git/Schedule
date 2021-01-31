@@ -1,35 +1,32 @@
 package com.example.schedule.ui.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.schedule.R
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.databinding.ItemScheduleBinding
 import javax.inject.Inject
 
 class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapter.ScheduleAdapterViewHolder>() {
 
-     class ScheduleAdapterViewHolder constructor(private val biding: ItemScheduleBinding) : RecyclerView.ViewHolder(biding.root) {
+    class ScheduleAdapterViewHolder constructor(private val biding: ItemScheduleBinding) : RecyclerView.ViewHolder(biding.root) {
 
-         fun bind(schedule: ScheduleInfo) {
+        fun bind(schedule: ScheduleInfo) {
             biding.year.text = schedule.hour
             biding.description.text = schedule.description
             biding.taskName.text = schedule.taskName
         }
 
-         companion object {
-             fun from(parent: ViewGroup): ScheduleAdapterViewHolder {
-                 val layoutInflater = LayoutInflater.from(parent.context)
-                 val binding = ItemScheduleBinding.inflate(layoutInflater, parent, false)
+        companion object {
+            fun from(parent: ViewGroup): ScheduleAdapterViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ItemScheduleBinding.inflate(layoutInflater, parent, false)
 
-                 return  ScheduleAdapterViewHolder(binding)
-             }
-         }
+                return ScheduleAdapterViewHolder(binding)
+            }
+        }
     }
 
     private val differCallback = object : DiffUtil.ItemCallback<ScheduleInfo>() {
@@ -50,7 +47,7 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
     }
 
     override fun onBindViewHolder(holder: ScheduleAdapterViewHolder, position: Int) {
-      val schedule = differ.currentList[position]
+        val schedule = differ.currentList[position]
         holder.bind(schedule)
     }
 
