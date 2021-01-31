@@ -43,6 +43,16 @@ class TimeAdapter @Inject constructor() : RecyclerView.Adapter<TimeAdapter.TimeA
         }
     }
 
+    fun getTime(position: Int): String {
+        val reaPos = position % 24
+        return differ.currentList[reaPos]
+    }
+
+    fun getTimeMinutes(position: Int): String {
+        val reaPos = position % 60
+        return differ.currentList[reaPos]
+    }
+
     override fun getItemCount(): Int {
         return Int.MAX_VALUE
     }

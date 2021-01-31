@@ -66,7 +66,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                     val month = cal.get(Calendar.MONTH).toString()
                     val day = cal.get(Calendar.DAY_OF_MONTH).toString()
                     val scheduleInfo = ScheduleInfo(null, year, month,
-                            day, "13-30",  schedule.taskName, schedule.description)
+                            day, schedule.hour,  schedule.taskName, schedule.description)
                     homeScheduleViewModel.updateAndReplace(scheduleInfo)
                 }
             }
