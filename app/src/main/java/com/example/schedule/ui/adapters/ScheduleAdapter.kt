@@ -9,11 +9,28 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.R
 import com.example.schedule.data.models.ScheduleInfo
+import com.example.schedule.databinding.ItemScheduleBinding
 import javax.inject.Inject
 
 class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapter.ScheduleAdapterViewHolder>() {
 
-    inner class ScheduleAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+     class ScheduleAdapterViewHolder constructor(private val biding: ItemScheduleBinding) : RecyclerView.ViewHolder(biding.root) {
+
+         fun bind(schedule: ScheduleInfo) {
+            biding.year.text = schedule.year
+            biding.description.text = schedule.description
+            biding.taskName.text = schedule.taskName
+        }
+
+         companion object {
+             fun from(parent: ViewGroup): ScheduleAdapterViewHolder {
+                 val layoutInflater = LayoutInflater.from(parent.context)
+                 val binding = ItemScheduleBinding.inflate(layoutInflater, parent, false)
+
+                 return  ScheduleAdapterViewHolder(binding)
+             }
+         }
+    }
 
     private val differCallback = object : DiffUtil.ItemCallback<ScheduleInfo>() {
 
@@ -29,22 +46,12 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
     var differ = AsyncListDiffer(this, differCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduleAdapterViewHolder {
-        return ScheduleAdapterViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_schedule, parent, false)
-        )
+        return ScheduleAdapterViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: ScheduleAdapterViewHolder, position: Int) {
-        holder.itemView.apply {
-            val taskName = findViewById<TextView>(R.id.taskName)
-            val description = findViewById<TextView>(R.id.description)
-            val year = findViewById<TextView>(R.id.year)
-
-            taskName.text = differ.currentList[position].taskName
-            description.text = differ.currentList[position].description
-            year.text = differ.currentList[position].year
-        }
+      val schedule = differ.currentList[position]
+        holder.bind(schedule)
     }
 
     override fun getItemCount(): Int {
