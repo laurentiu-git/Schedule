@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:text="@string/today"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/entryEvent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -91,13 +91,13 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/homeRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintHorizontal_bias="0.5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dayId"  />
+            app:layout_constraintTop_toBottomOf="@+id/dayId" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
