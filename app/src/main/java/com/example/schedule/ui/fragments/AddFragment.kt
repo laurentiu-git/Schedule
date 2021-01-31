@@ -13,6 +13,7 @@ class AddFragment : Fragment(R.layout.fragment_add) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentAddBinding.bind(view)
+        fragmentBinding = binding
         binding.textView.text = getString(R.string.hello)
     }
 
