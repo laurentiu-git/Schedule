@@ -17,7 +17,7 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
      class ScheduleAdapterViewHolder constructor(private val biding: ItemScheduleBinding) : RecyclerView.ViewHolder(biding.root) {
 
          fun bind(schedule: ScheduleInfo) {
-            biding.year.text = schedule.year
+            biding.year.text = schedule.hour
             biding.description.text = schedule.description
             biding.taskName.text = schedule.taskName
         }

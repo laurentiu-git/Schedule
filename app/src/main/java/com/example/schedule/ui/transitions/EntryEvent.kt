@@ -48,11 +48,13 @@ class EntryEvent : FrameLayout {
 
         setOnClickListener {
             entryEvent?.onCloseClicked()
+            hideKeyboardFrom(context, it)
         }
 
         val closeElement = findViewById<TextView>(R.id.close)
         closeElement.setOnClickListener {
             entryEvent?.onCloseClicked()
+            hideKeyboardFrom(context, it)
         }
 
         val addLayout = findViewById<ConstraintLayout>(R.id.addLayout)

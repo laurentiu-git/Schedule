@@ -11,8 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Schedule">
         <activity
-            android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan">
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

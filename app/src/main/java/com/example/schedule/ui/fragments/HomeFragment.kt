@@ -18,6 +18,8 @@ import com.example.schedule.ui.adapters.ScheduleAdapter
 import com.example.schedule.ui.transitions.AddEventTransition
 import com.example.schedule.ui.transitions.EntryEventListener
 import com.example.schedule.viewmodels.HomeScheduleViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationMenu
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.* //ktlint-disable
@@ -42,10 +44,13 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         homeScheduleViewModel = ViewModelProvider(requireActivity()).get(HomeScheduleViewModel::class.java)
 
         setupRecyclerView()
+        var bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+
 
         binding.addEvent.setOnClickListener {
             val animation = AddEventTransition(binding.addEvent, binding.entryEvent)
             animation.openCalendar()
+            bottomNav?.isVisible = false
         }
 
         binding.entryEvent.setAddEventListener(
@@ -53,6 +58,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                 override fun onCloseClicked() {
                     val animation = AddEventTransition(binding.addEvent, binding.entryEvent)
                     animation.closeCalendar()
+                    bottomNav?.isVisible = true
                 }
 
                 override fun addSchedule(schedule: ScheduleInfo) {
@@ -76,6 +82,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                 } else {
                     val animation = AddEventTransition(binding.addEvent, binding.entryEvent)
                     animation.closeCalendar()
+                    bottomNav?.isVisible = true
                 }
             }
         }
