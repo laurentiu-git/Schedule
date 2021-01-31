@@ -32,8 +32,6 @@ class EntryEvent : FrameLayout {
         "54", "55", "56", "57", "58", "59"
     )
 
-    val calendar = Calendar.getInstance()
-
     constructor(context: Context) : super(context) {
         init()
     }
@@ -89,11 +87,8 @@ class EntryEvent : FrameLayout {
 
         val addBtn = findViewById<Button>(R.id.button)
         addBtn.setOnClickListener {
-            val year = calendar.get(Calendar.YEAR).toString()
-            val month = calendar.get(Calendar.MONTH).toString()
-            val day = calendar.get(Calendar.DAY_OF_MONTH).toString()
-            val hour = "15-30"
-            val schedule = ScheduleInfo(null, year, month, day, hour, title.text.toString(), description.text.toString())
+            val schedule = ScheduleInfo(null, "", "", "", "",
+                    title.text.toString(), description.text.toString())
             entryEvent?.addSchedule(schedule)
         }
     }

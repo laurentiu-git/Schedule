@@ -56,7 +56,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                 }
 
                 override fun addSchedule(schedule: ScheduleInfo) {
-                    homeScheduleViewModel.updateAndReplace(schedule)
+                    val year = cal.get(Calendar.YEAR).toString()
+                    val month = cal.get(Calendar.MONTH).toString()
+                    val day = cal.get(Calendar.DAY_OF_MONTH).toString()
+                    val scheduleInfo = ScheduleInfo(null, year, month,
+                            day, "13-30",  schedule.taskName, schedule.description)
+                    homeScheduleViewModel.updateAndReplace(scheduleInfo)
                 }
             }
         )
