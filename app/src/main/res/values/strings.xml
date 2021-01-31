@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Schedule</string>
     <string name="hello">Hello</string>
+    <string name="cancel">Cancel</string>
+    <string name="description">Description</string>
+    <string name="add">Add</string>
+    <string name="title">Title</string>
+    <string name="new_task">New Task</string>
+    <string name="today">Today</string>
 </resources>
