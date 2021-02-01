@@ -7,7 +7,6 @@ import android.widget.DatePicker
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -100,32 +99,26 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         binding.arrowLeft.setOnClickListener {
             val previousDay = -1
             binding.dayId.text = getDay(previousDay)
+            homeScheduleViewModel.getSchedule(cal.get(Calendar.DAY_OF_MONTH).toString()).observe(
+                viewLifecycleOwner,
+                {
+                    result ->
+                    scheduleAdapter.differ.submitList(result)
+                }
+            )
         }
 
         binding.arrowRight.setOnClickListener {
             val nextDay = 1
             binding.dayId.text = getDay(nextDay)
-        }
-
-        homeScheduleViewModel.getSchedule().observe(
-            viewLifecycleOwner,
-            Observer {
-                result ->
-                scheduleAdapter.differ.submitList(result)
-            }
-        )
-
-       /* homeScheduleViewModel.daySchedule.observe(
-            viewLifecycleOwner,
-            Observer {
-                response ->
-                when (response) {
-                    is Resource.Success -> {
-                        binding.dayId.text = response.data
-                  }
+            homeScheduleViewModel.getSchedule(cal.get(Calendar.DAY_OF_MONTH).toString()).observe(
+                viewLifecycleOwner,
+                {
+                    result ->
+                    scheduleAdapter.differ.submitList(result)
                 }
-            }
-        ) */
+            )
+        }
     }
 
     private fun setupRecyclerView() {

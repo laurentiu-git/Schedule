@@ -9,8 +9,8 @@ interface ScheduleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateAndReplace(result: ScheduleInfo): Long
 
-    @Query("SELECT * FROM schedules")
-    fun getSchedule(): LiveData<List<ScheduleInfo>>
+    @Query("SELECT * FROM schedules WHERE day=:day")
+    fun getSchedule(day: String): LiveData<List<ScheduleInfo>>
 
     @Delete
     suspend fun deleteResult(result: ScheduleInfo)

@@ -29,7 +29,7 @@ class HomeScheduleViewModel @ViewModelInject constructor(
         scheduleItemsItemsRepository.updateAndReplace(schedule)
     }
 
-    fun getSchedule() = scheduleItemsItemsRepository.getSchedules()
+    fun getSchedule(day: String) = scheduleItemsItemsRepository.getSchedules(day)
 
     private fun scheduleItemsResponse(response: String): Resource<String>? {
         if (response == "Yolo" || response == "30-01-2021") {

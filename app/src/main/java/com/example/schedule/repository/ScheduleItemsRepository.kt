@@ -14,5 +14,5 @@ class ScheduleItemsRepository @Inject constructor(
 
     suspend fun deleteSchedule(schedule: ScheduleInfo) = db.getScheduleDao().deleteResult(schedule)
 
-    fun getSchedules() = db.getScheduleDao().getSchedule()
+    fun getSchedules(day: String) = db.getScheduleDao().getSchedule(day)
 }
