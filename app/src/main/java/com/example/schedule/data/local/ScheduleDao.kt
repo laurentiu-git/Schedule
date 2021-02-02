@@ -1,7 +1,7 @@
 package com.example.schedule.data.local
 
 import androidx.lifecycle.LiveData
-import androidx.room.* //ktlint-disable
+import androidx.room.*  //ktlint-disable
 import com.example.schedule.data.models.ScheduleInfo
 
 @Dao

@@ -99,26 +99,23 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         binding.arrowLeft.setOnClickListener {
             val previousDay = -1
             binding.dayId.text = getDay(previousDay)
-            homeScheduleViewModel.getSchedule(cal.get(Calendar.DAY_OF_MONTH).toString()).observe(
-                viewLifecycleOwner,
-                {
-                    result ->
-                    scheduleAdapter.differ.submitList(result)
-                }
-            )
+            homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
         }
 
         binding.arrowRight.setOnClickListener {
             val nextDay = 1
             binding.dayId.text = getDay(nextDay)
-            homeScheduleViewModel.getSchedule(cal.get(Calendar.DAY_OF_MONTH).toString()).observe(
-                viewLifecycleOwner,
-                {
-                    result ->
-                    scheduleAdapter.differ.submitList(result)
-                }
-            )
+            homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
         }
+
+        homeScheduleViewModel.day = cal.get(Calendar.DAY_OF_MONTH).toString()
+        homeScheduleViewModel.schedule.observe(
+            viewLifecycleOwner,
+            {
+                result ->
+                scheduleAdapter.differ.submitList(result)
+            }
+        )
     }
 
     private fun setupRecyclerView() {
