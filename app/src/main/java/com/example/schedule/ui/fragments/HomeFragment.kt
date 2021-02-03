@@ -33,6 +33,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     lateinit var scheduleAdapter: ScheduleAdapter
 
     private val cal = Calendar.getInstance()
+    lateinit var currentDate: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,6 +44,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
 
         setupRecyclerView()
         var bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+
+        val simpleDateFormat = SimpleDateFormat("EEE, MMM d")
+        currentDate = simpleDateFormat.format(Date())
 
         binding.addEvent.setOnClickListener {
             val animation = AddEventTransition(binding.addEvent, binding.entryEvent)
@@ -134,13 +138,20 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         cal.set(year, month, dayOfMonth)
-        binding.dayId.text = "$dayOfMonth-${month + 1}-$year"
+        binding.dayId.text = getCurrentDate(cal.time)
     }
 
     private fun getDay(position: Int): String {
         cal.add(Calendar.DATE, position)
-        val dateFromat = SimpleDateFormat("EEE, MMM d", Locale.getDefault())
-        return dateFromat.format(cal.time)
+        return if (currentDate != getCurrentDate(cal.time))
+            getCurrentDate(cal.time)
+        else
+            "Today"
+    }
+
+    private fun getCurrentDate(date: Date): String {
+        val dateFormat = SimpleDateFormat("EEE, MMM d", Locale.getDefault())
+        return dateFormat.format(date)
     }
 
     override fun onDestroyView() {
