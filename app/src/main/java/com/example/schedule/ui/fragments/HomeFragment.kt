@@ -112,7 +112,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
             homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
         }
 
-        homeScheduleViewModel.day = cal.get(Calendar.DAY_OF_MONTH).toString()
+        homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
         homeScheduleViewModel.schedule.observe(
             viewLifecycleOwner,
             {

@@ -16,11 +16,9 @@ class HomeScheduleViewModel @ViewModelInject constructor(
 
     val daySchedule: MutableLiveData<Resource<String>> = MutableLiveData()
     var schedule = MediatorLiveData<List<ScheduleInfo>>()
-    var day = "2"
 
     init {
         getDay()
-        schedule(day)
     }
 
     private fun getDay() = viewModelScope.launch {
