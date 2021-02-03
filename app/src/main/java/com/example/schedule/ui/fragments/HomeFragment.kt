@@ -139,7 +139,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
 
     private fun getDay(position: Int): String {
         cal.add(Calendar.DATE, position)
-        val dateFromat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val dateFromat = SimpleDateFormat("EEE, MMM d", Locale.getDefault())
         return dateFromat.format(cal.time)
     }
 
