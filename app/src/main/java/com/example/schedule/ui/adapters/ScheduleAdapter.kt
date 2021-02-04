@@ -23,8 +23,6 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
                 duration = 2000
                 start()
             }
-
-
         }
 
         companion object {
