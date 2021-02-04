@@ -43,9 +43,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         homeScheduleViewModel = ViewModelProvider(requireActivity()).get(HomeScheduleViewModel::class.java)
 
         setupRecyclerView()
-        var bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
-        val simpleDateFormat = SimpleDateFormat("EEE, MMM d")
+        val simpleDateFormat = SimpleDateFormat("EEE, MMM d", Locale.getDefault())
         currentDate = simpleDateFormat.format(Date())
 
         binding.addEvent.setOnClickListener {

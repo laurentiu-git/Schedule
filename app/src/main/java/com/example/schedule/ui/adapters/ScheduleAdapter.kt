@@ -1,5 +1,6 @@
 package com.example.schedule.ui.adapters
 
+import android.animation.ObjectAnimator
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -11,12 +12,19 @@ import javax.inject.Inject
 
 class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapter.ScheduleAdapterViewHolder>() {
 
-    class ScheduleAdapterViewHolder constructor(private val biding: ItemScheduleBinding) : RecyclerView.ViewHolder(biding.root) {
+    class ScheduleAdapterViewHolder constructor(private val binding: ItemScheduleBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(schedule: ScheduleInfo) {
-            biding.year.text = schedule.hour
-            biding.description.text = schedule.description
-            biding.taskName.text = schedule.taskName
+            binding.year.text = schedule.hour
+            binding.description.text = schedule.description
+            binding.taskName.text = schedule.taskName
+
+            ObjectAnimator.ofFloat(binding.timelineCircle, "translationY", 100f).apply {
+                duration = 2000
+                start()
+            }
+
+
         }
 
         companion object {

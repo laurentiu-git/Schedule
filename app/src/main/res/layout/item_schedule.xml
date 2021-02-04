@@ -32,12 +32,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description"
         app:layout_constraintVertical_bias="0.05" />
+
+    <View
+        android:id="@+id/timeline_line"
+        android:layout_width="3dp"
+        android:layout_height="0dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.122"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/timeline_circle"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/shape_circle"
+        app:layout_constraintEnd_toEndOf="@+id/timeline_line"
+        app:layout_constraintStart_toStartOf="@+id/timeline_line"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/timeline_circle_filled"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="24dp"
+        android:visibility="invisible"
+        android:background="@drawable/shape_circle_full"
+        app:layout_constraintEnd_toEndOf="@+id/timeline_line"
+        app:layout_constraintStart_toStartOf="@+id/timeline_line"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
