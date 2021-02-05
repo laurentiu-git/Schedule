@@ -1,6 +1,7 @@
 package com.example.schedule.di
 
 import android.content.Context
+import android.location.Geocoder
 import com.example.schedule.data.local.ScheduleDatabase
 import dagger.Module
 import dagger.Provides
@@ -18,4 +19,10 @@ object AppModule {
     fun proivdeShopDatabaseInstance(
         @ApplicationContext context: Context
     ) = ScheduleDatabase(context)
+
+    @Provides
+    @Singleton
+    fun provideGeocoder(
+            @ApplicationContext context: Context
+    ) = Geocoder(context)
 }
