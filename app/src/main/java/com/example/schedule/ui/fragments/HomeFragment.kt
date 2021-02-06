@@ -25,7 +25,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSetListener {
-
     private var fragmentBinding: FragmentHomeBinding? = null
     lateinit var binding: FragmentHomeBinding
     lateinit var homeScheduleViewModel: HomeScheduleViewModel
@@ -120,16 +119,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                 scheduleAdapter.differ.submitList(result)
             }
         )
-
-        homeScheduleViewModel.getLocation("Buzau")
-        homeScheduleViewModel.locationList.observe(
-                viewLifecycleOwner,
-                {
-                    result ->
-                    binding.dayId.text = result[0].longitude.toString()
-                }
-        )
-
     }
 
     private fun setupRecyclerView() {

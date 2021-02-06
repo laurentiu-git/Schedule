@@ -1,6 +1,5 @@
 package com.example.schedule.viewmodels
 
-import android.location.Address
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,7 +15,6 @@ class HomeScheduleViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     val daySchedule: MutableLiveData<Resource<String>> = MutableLiveData()
-    val locationList: MutableLiveData<List<Address>> = MutableLiveData()
     var schedule = MediatorLiveData<List<ScheduleInfo>>()
 
     init {
@@ -47,9 +45,5 @@ class HomeScheduleViewModel @ViewModelInject constructor(
         schedule.addSource(scheduleItemsItemsRepository.getSchedules(day)) {
             schedule.value = it
         }
-    }
-
-    fun getLocation(location: String) {
-        locationList.postValue(scheduleItemsItemsRepository.getLocation(location))
     }
 }

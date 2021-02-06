@@ -2,11 +2,19 @@ package com.example.schedule.ui.transitions
 
 import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.* //ktlint-disable
+import android.widget.Button
+import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.findFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -14,8 +22,13 @@ import androidx.recyclerview.widget.SnapHelper
 import com.example.schedule.R
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.ui.adapters.TimeAdapter
+import com.example.schedule.util.Constants
+import com.google.android.gms.common.api.Status
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.* //ktlint-disable
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -106,6 +119,32 @@ class EntryEvent : FrameLayout {
             )
             entryEvent?.addSchedule(schedule)
         }
+
+        if (!Places.isInitialized()) {
+            Places.initialize(context, Constants.APIKEY)
+        }
+
+        val fragment = findViewById<View>(R.id.autocomplete_fragment)
+
+        // Initialize the AutocompleteSupportFragment
+        val autocompleteFragment = fragment.findFragment<Fragment>() as AutocompleteSupportFragment
+        // Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(
+            object : PlaceSelectionListener {
+                override fun onPlaceSelected(place: Place) {
+// TODO: Get info about the selected place.
+                    Log.i("TAG", "Place: ${place.name}, ${place.id}")
+                }
+
+                override fun onError(status: Status) {
+// TODO: Handle the error.
+                    Log.i("TAG", "An error occurred: $status")
+                }
+            }
+        )
     }
 
     fun setAddEventListener(entryEventListener: EntryEventListener) {
@@ -117,6 +156,17 @@ class EntryEvent : FrameLayout {
         if (imm.isAcceptingText) {
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
+    }
+
+    private fun getActivity(): FragmentActivity? {
+        var context = context
+        while (context is ContextWrapper) {
+            if (context is FragmentActivity) {
+                return context
+            }
+            context = context.baseContext
+        }
+        return null
     }
 
     private fun SnapHelper.getSnapPosition(recyclerView: RecyclerView): Int {
