@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
+import com.example.schedule.BuildConfig
 import com.example.schedule.R
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.ui.adapters.TimeAdapter
@@ -121,7 +122,7 @@ class EntryEvent : FrameLayout {
         }
 
         if (!Places.isInitialized()) {
-            Places.initialize(context, Constants.APIKEY)
+            Places.initialize(context, BuildConfig.API_PLACES)
         }
 
         val fragment = findViewById<View>(R.id.autocomplete_fragment)
