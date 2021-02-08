@@ -45,6 +45,7 @@
 
 
             <TextView
+                android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -95,9 +96,23 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.566" />
+                app:layout_constraintVertical_bias="0.493" />
+
+
+            <fragment
+                android:id="@+id/autocomplete_fragment"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/description"
+                app:layout_constraintVertical_bias="0.241" />
 
             <View
+                android:id="@+id/view"
                 android:layout_width="54dp"
                 android:layout_height="24dp"
                 android:background="@drawable/rectangle"
@@ -118,9 +133,10 @@
                 app:layout_constraintBottom_toTopOf="@+id/button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description"
-                app:layout_constraintVertical_bias="0.509" />
+                app:layout_constraintVertical_bias="0.66" />
 
             <TextView
+                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=":"
@@ -136,13 +152,13 @@
                 android:id="@+id/minutesList"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginEnd="124dp"
+                android:layout_marginEnd="122dp"
                 android:scrollbars="none"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toTopOf="@+id/button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description"
-                app:layout_constraintVertical_bias="0.509" />
+                app:layout_constraintVertical_bias="0.66" />
 
             <Button
                 android:id="@+id/button"
@@ -156,18 +172,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.924" />
-
-            <fragment
-                android:id="@+id/autocomplete_fragment"
-                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.045" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

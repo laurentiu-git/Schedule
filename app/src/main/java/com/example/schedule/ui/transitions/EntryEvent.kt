@@ -23,7 +23,6 @@ import com.example.schedule.BuildConfig
 import com.example.schedule.R
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.ui.adapters.TimeAdapter
-import com.example.schedule.util.Constants
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
