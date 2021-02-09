@@ -76,7 +76,8 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.308" />
+                app:layout_constraintVertical_bias="0.269" />
+
 
             <EditText
                 android:id="@+id/description"
@@ -93,11 +94,10 @@
                 android:maxLines="3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.493" />
-
+                app:layout_constraintVertical_bias="0.432" />
 
             <fragment
                 android:id="@+id/autocomplete_fragment"
@@ -109,7 +109,20 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description"
-                app:layout_constraintVertical_bias="0.241" />
+                app:layout_constraintVertical_bias="0.135" />
+
+            <TextView
+                android:id="@+id/startTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Time"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.099"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.659" />
 
             <View
                 android:id="@+id/view"
@@ -117,23 +130,24 @@
                 android:layout_height="24dp"
                 android:background="@drawable/rectangle"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.51"
+                app:layout_constraintEnd_toStartOf="@+id/button"
+                app:layout_constraintHorizontal_bias="0.57"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.745" />
+                app:layout_constraintTop_toBottomOf="@+id/startTime"
+                app:layout_constraintVertical_bias="0.086" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/hourList"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginStart="132dp"
                 android:scrollbars="none"
                 android:textAlignment="center"
-                app:layout_constraintBottom_toTopOf="@+id/button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.126"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/description"
-                app:layout_constraintVertical_bias="0.66" />
+                app:layout_constraintTop_toBottomOf="@+id/startTime"
+                app:layout_constraintVertical_bias="0.095" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -143,22 +157,85 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.511"
+                app:layout_constraintHorizontal_bias="0.189"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.739" />
+                app:layout_constraintVertical_bias="0.744" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/minutesList"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginEnd="122dp"
+                android:scrollbars="none"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.22"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/startTime"
+                app:layout_constraintVertical_bias="0.095" />
+
+            <TextView
+                android:id="@+id/endTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End Time"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.883"
+                app:layout_constraintStart_toEndOf="@+id/startTime"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.659" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="54dp"
+                android:layout_height="24dp"
+                android:background="@drawable/rectangle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.65"
+                app:layout_constraintStart_toEndOf="@+id/button"
+                app:layout_constraintTop_toBottomOf="@+id/endTime"
+                app:layout_constraintVertical_bias="0.086" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/hourTimeForEnd"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="40dp"
+                android:scrollbars="none"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toTopOf="@+id/button"
+                app:layout_constraintStart_toEndOf="@+id/button"
+                app:layout_constraintTop_toBottomOf="@+id/startTime"
+                app:layout_constraintVertical_bias="0.303" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.858"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.744" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/minutesTimeForEnd"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="20dp"
                 android:scrollbars="none"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toTopOf="@+id/button"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/description"
-                app:layout_constraintVertical_bias="0.66" />
+                app:layout_constraintTop_toBottomOf="@+id/endTime"
+                app:layout_constraintVertical_bias="0.303" />
 
             <Button
                 android:id="@+id/button"
