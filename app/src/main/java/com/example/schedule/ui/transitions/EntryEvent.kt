@@ -108,17 +108,21 @@ class EntryEvent : FrameLayout {
 
         binding.addBtn.setOnClickListener {
             val hour = timeAdapter.getTime(snapHelper.getSnapPosition(binding.hourList))
+            val hourEnd = timeAdapter.getTime(snapHelper.getSnapPosition(binding.hourTimeForEnd))
             val minutes = minutesAdapter.getTimeMinutes(snapHelper.getSnapPosition(binding.minutesList))
+            val minutesEnd = minutesAdapter.getTimeMinutes(snapHelper.getSnapPosition(binding.minutesTimeForEnd))
             val schedule = ScheduleInfo(
                 null,
                 "",
                 "",
                 "",
                 "$hour:$minutes",
+                "$hourEnd:$minutesEnd",
                 binding.titleText.text.toString(),
                 binding.description.text.toString()
             )
             entryEvent?.addSchedule(schedule)
+            entryEvent?.onCloseClicked()
         }
 
         addPlaceListener()

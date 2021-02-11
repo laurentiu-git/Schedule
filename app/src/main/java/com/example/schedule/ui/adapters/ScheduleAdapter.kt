@@ -15,7 +15,7 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
     class ScheduleAdapterViewHolder constructor(private val binding: ItemScheduleBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(schedule: ScheduleInfo) {
-            binding.year.text = schedule.hour
+            binding.year.text = schedule.startTime + " " + schedule.endTime
             binding.description.text = schedule.description
             binding.taskName.text = schedule.taskName
 

@@ -73,7 +73,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                         year,
                         month,
                         day,
-                        schedule.hour,
+                        schedule.startTime,
+                        schedule.endTime,
                         schedule.taskName,
                         schedule.description
                     )
