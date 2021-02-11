@@ -2,18 +2,12 @@ package com.example.schedule.ui.transitions
 
 import android.app.Activity
 import android.content.Context
-import android.content.ContextWrapper
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
 import android.widget.FrameLayout
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.findFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -23,7 +17,6 @@ import com.example.schedule.BuildConfig
 import com.example.schedule.R
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.databinding.AddEventFragmentBinding
-import com.example.schedule.databinding.FragmentHomeBinding
 import com.example.schedule.ui.adapters.TimeAdapter
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
@@ -97,11 +90,25 @@ class EntryEvent : FrameLayout {
             layoutManager = LinearLayoutManager(context)
         }
         binding.minutesList.scrollToPosition(Integer.MAX_VALUE / 2)
-        LinearSnapHelper().attachToRecyclerView( binding.minutesList)
+        LinearSnapHelper().attachToRecyclerView(binding.minutesList)
+
+        binding.hourTimeForEnd.apply {
+            adapter = timeAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+        binding.hourTimeForEnd.scrollToPosition(Integer.MAX_VALUE / 2)
+        LinearSnapHelper().attachToRecyclerView(binding.hourTimeForEnd)
+
+        binding.minutesTimeForEnd.apply {
+            adapter = minutesAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+        binding.minutesTimeForEnd.scrollToPosition(Integer.MAX_VALUE / 2)
+        LinearSnapHelper().attachToRecyclerView(binding.minutesTimeForEnd)
 
         binding.addBtn.setOnClickListener {
             val hour = timeAdapter.getTime(snapHelper.getSnapPosition(binding.hourList))
-            val minutes = minutesAdapter.getTimeMinutes(snapHelper.getSnapPosition( binding.minutesList))
+            val minutes = minutesAdapter.getTimeMinutes(snapHelper.getSnapPosition(binding.minutesList))
             val schedule = ScheduleInfo(
                 null,
                 "",
