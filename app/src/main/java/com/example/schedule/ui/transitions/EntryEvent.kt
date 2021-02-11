@@ -79,11 +79,10 @@ class EntryEvent : FrameLayout {
             hideKeyboardFrom(context, it)
         }
 
-
         binding.addLayout.setOnClickListener {
             hideKeyboardFrom(context, it)
         }
-        
+
         timeAdapter.differ.submitList(list)
         binding.hourList.apply {
             adapter = timeAdapter
@@ -97,15 +96,10 @@ class EntryEvent : FrameLayout {
             adapter = minutesAdapter
             layoutManager = LinearLayoutManager(context)
         }
-
         binding.minutesList.scrollToPosition(Integer.MAX_VALUE / 2)
         LinearSnapHelper().attachToRecyclerView( binding.minutesList)
 
-        val title = findViewById<EditText>(R.id.titleText)
-        val description = findViewById<EditText>(R.id.description)
-
-        val addBtn = findViewById<Button>(R.id.button)
-        addBtn.setOnClickListener {
+        binding.addBtn.setOnClickListener {
             val hour = timeAdapter.getTime(snapHelper.getSnapPosition(binding.hourList))
             val minutes = minutesAdapter.getTimeMinutes(snapHelper.getSnapPosition( binding.minutesList))
             val schedule = ScheduleInfo(
@@ -114,8 +108,8 @@ class EntryEvent : FrameLayout {
                 "",
                 "",
                 "$hour:$minutes",
-                title.text.toString(),
-                description.text.toString()
+                binding.titleText.text.toString(),
+                binding.description.text.toString()
             )
             entryEvent?.addSchedule(schedule)
         }

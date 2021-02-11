@@ -130,7 +130,7 @@
                 android:layout_height="24dp"
                 android:background="@drawable/rectangle"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/button"
+                app:layout_constraintEnd_toStartOf="@+id/addBtn"
                 app:layout_constraintHorizontal_bias="0.57"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/startTime"
@@ -196,7 +196,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.65"
-                app:layout_constraintStart_toEndOf="@+id/button"
+                app:layout_constraintStart_toEndOf="@+id/addBtn"
                 app:layout_constraintTop_toBottomOf="@+id/endTime"
                 app:layout_constraintVertical_bias="0.086" />
 
@@ -207,8 +207,8 @@
                 android:layout_marginStart="40dp"
                 android:scrollbars="none"
                 android:textAlignment="center"
-                app:layout_constraintBottom_toTopOf="@+id/button"
-                app:layout_constraintStart_toEndOf="@+id/button"
+                app:layout_constraintBottom_toTopOf="@+id/addBtn"
+                app:layout_constraintStart_toEndOf="@+id/addBtn"
                 app:layout_constraintTop_toBottomOf="@+id/startTime"
                 app:layout_constraintVertical_bias="0.303" />
 
@@ -232,13 +232,13 @@
                 android:layout_marginEnd="20dp"
                 android:scrollbars="none"
                 android:textAlignment="center"
-                app:layout_constraintBottom_toTopOf="@+id/button"
+                app:layout_constraintBottom_toTopOf="@+id/addBtn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/endTime"
                 app:layout_constraintVertical_bias="0.303" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/addBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
