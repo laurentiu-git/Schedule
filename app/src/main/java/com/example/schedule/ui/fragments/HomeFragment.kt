@@ -26,22 +26,24 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSetListener {
     private var fragmentBinding: FragmentHomeBinding? = null
-    lateinit var binding: FragmentHomeBinding
     lateinit var homeScheduleViewModel: HomeScheduleViewModel
     @Inject
     lateinit var scheduleAdapter: ScheduleAdapter
 
     private val cal = Calendar.getInstance()
-    lateinit var currentDate: String
+    private lateinit var currentDate: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding = FragmentHomeBinding.bind(view)
+        val binding = FragmentHomeBinding.bind(view)
         fragmentBinding = binding
 
         homeScheduleViewModel = ViewModelProvider(requireActivity()).get(HomeScheduleViewModel::class.java)
 
-        setupRecyclerView()
+        binding.homeRecyclerView.apply {
+            adapter = scheduleAdapter
+            layoutManager = LinearLayoutManager(activity)
+        }
+
         val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
         val simpleDateFormat = SimpleDateFormat("EEE, MMM d", Locale.getDefault())
@@ -121,13 +123,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         )
     }
 
-    private fun setupRecyclerView() {
-        binding.homeRecyclerView.apply {
-            adapter = scheduleAdapter
-            layoutManager = LinearLayoutManager(activity)
-        }
-    }
-
     private fun pickDate(view: View) {
         val year = cal.get(Calendar.YEAR)
         val month = cal.get(Calendar.MONTH)
@@ -137,7 +132,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         cal.set(year, month, dayOfMonth)
-        binding.dayId.text = getCurrentDate(cal.time)
+        fragmentBinding?.dayId?.text = getCurrentDate(cal.time)
     }
 
     private fun getDay(position: Int): String {
@@ -155,6 +150,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
 
     override fun onDestroyView() {
         super.onDestroyView()
+        fragmentBinding?.homeRecyclerView?.adapter = null
         fragmentBinding = null
     }
 }

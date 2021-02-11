@@ -80,10 +80,7 @@ class EntryEvent : FrameLayout {
         }
 
         val recyclerView = findViewById<RecyclerView>(R.id.hourList)
-        val recyclerViewMinutes = findViewById<RecyclerView>(R.id.minutesList)
-
         timeAdapter.differ.submitList(list)
-
         recyclerView.apply {
             adapter = timeAdapter
             layoutManager = LinearLayoutManager(context)
@@ -91,6 +88,7 @@ class EntryEvent : FrameLayout {
         recyclerView.scrollToPosition(Integer.MAX_VALUE / 2)
         snapHelper.attachToRecyclerView(recyclerView)
 
+        val recyclerViewMinutes = findViewById<RecyclerView>(R.id.minutesList)
         minutesAdapter.differ.submitList(listMinutes)
 
         recyclerViewMinutes.apply {
@@ -120,6 +118,10 @@ class EntryEvent : FrameLayout {
             entryEvent?.addSchedule(schedule)
         }
 
+        addPlaceListener()
+    }
+
+    private fun addPlaceListener() {
         if (!Places.isInitialized()) {
             Places.initialize(context, BuildConfig.API_PLACES)
         }
@@ -173,6 +175,10 @@ class EntryEvent : FrameLayout {
         val layoutManager = recyclerView.layoutManager ?: return RecyclerView.NO_POSITION
         val snapView = findSnapView(layoutManager) ?: return RecyclerView.NO_POSITION
         return layoutManager.getPosition(snapView)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
     }
 }
 
