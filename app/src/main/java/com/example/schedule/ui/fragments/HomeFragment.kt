@@ -34,6 +34,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     private lateinit var currentDate: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHomeBinding.bind(view)
         fragmentBinding = binding
 

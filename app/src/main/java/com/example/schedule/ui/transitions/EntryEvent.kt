@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.SnapHelper
 import com.example.schedule.BuildConfig
 import com.example.schedule.R
 import com.example.schedule.data.models.ScheduleInfo
+import com.example.schedule.databinding.AddEventFragmentBinding
+import com.example.schedule.databinding.FragmentHomeBinding
 import com.example.schedule.ui.adapters.TimeAdapter
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
@@ -42,6 +44,8 @@ class EntryEvent : FrameLayout {
 
     private val snapHelper = LinearSnapHelper()
 
+    private var fragmentBinding: AddEventFragmentBinding? = null
+
     private val list = mutableListOf("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24")
     private val listMinutes = mutableListOf(
         "00",
@@ -61,51 +65,49 @@ class EntryEvent : FrameLayout {
     }
 
     private fun init() {
-        View.inflate(context, R.layout.add_event_fragment, this)
+        val view = View.inflate(context, R.layout.add_event_fragment, this)
+        val binding = AddEventFragmentBinding.bind(view)
+        fragmentBinding = binding
 
         setOnClickListener {
             entryEvent?.onCloseClicked()
             hideKeyboardFrom(context, it)
         }
 
-        val closeElement = findViewById<TextView>(R.id.close)
-        closeElement.setOnClickListener {
+        binding.close.setOnClickListener {
             entryEvent?.onCloseClicked()
             hideKeyboardFrom(context, it)
         }
 
-        val addLayout = findViewById<ConstraintLayout>(R.id.addLayout)
-        addLayout.setOnClickListener {
+
+        binding.addLayout.setOnClickListener {
             hideKeyboardFrom(context, it)
         }
-
-        val recyclerView = findViewById<RecyclerView>(R.id.hourList)
+        
         timeAdapter.differ.submitList(list)
-        recyclerView.apply {
+        binding.hourList.apply {
             adapter = timeAdapter
             layoutManager = LinearLayoutManager(context)
         }
-        recyclerView.scrollToPosition(Integer.MAX_VALUE / 2)
-        snapHelper.attachToRecyclerView(recyclerView)
+        binding.hourList.scrollToPosition(Integer.MAX_VALUE / 2)
+        snapHelper.attachToRecyclerView(binding.hourList)
 
-        val recyclerViewMinutes = findViewById<RecyclerView>(R.id.minutesList)
         minutesAdapter.differ.submitList(listMinutes)
-
-        recyclerViewMinutes.apply {
+        binding.minutesList.apply {
             adapter = minutesAdapter
             layoutManager = LinearLayoutManager(context)
         }
 
-        recyclerViewMinutes.scrollToPosition(Integer.MAX_VALUE / 2)
-        LinearSnapHelper().attachToRecyclerView(recyclerViewMinutes)
+        binding.minutesList.scrollToPosition(Integer.MAX_VALUE / 2)
+        LinearSnapHelper().attachToRecyclerView( binding.minutesList)
 
         val title = findViewById<EditText>(R.id.titleText)
         val description = findViewById<EditText>(R.id.description)
 
         val addBtn = findViewById<Button>(R.id.button)
         addBtn.setOnClickListener {
-            val hour = timeAdapter.getTime(snapHelper.getSnapPosition(recyclerView))
-            val minutes = minutesAdapter.getTimeMinutes(snapHelper.getSnapPosition(recyclerViewMinutes))
+            val hour = timeAdapter.getTime(snapHelper.getSnapPosition(binding.hourList))
+            val minutes = minutesAdapter.getTimeMinutes(snapHelper.getSnapPosition( binding.minutesList))
             val schedule = ScheduleInfo(
                 null,
                 "",
@@ -137,12 +139,10 @@ class EntryEvent : FrameLayout {
         autocompleteFragment.setOnPlaceSelectedListener(
             object : PlaceSelectionListener {
                 override fun onPlaceSelected(place: Place) {
-// TODO: Get info about the selected place.
                     Log.i("TAG", "Place: ${place.name}, ${place.id}")
                 }
 
                 override fun onError(status: Status) {
-// TODO: Handle the error.
                     Log.i("TAG", "An error occurred: $status")
                 }
             }
@@ -160,17 +160,6 @@ class EntryEvent : FrameLayout {
         }
     }
 
-    private fun getActivity(): FragmentActivity? {
-        var context = context
-        while (context is ContextWrapper) {
-            if (context is FragmentActivity) {
-                return context
-            }
-            context = context.baseContext
-        }
-        return null
-    }
-
     private fun SnapHelper.getSnapPosition(recyclerView: RecyclerView): Int {
         val layoutManager = recyclerView.layoutManager ?: return RecyclerView.NO_POSITION
         val snapView = findSnapView(layoutManager) ?: return RecyclerView.NO_POSITION
@@ -179,6 +168,7 @@ class EntryEvent : FrameLayout {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+        fragmentBinding = null
     }
 }
 
