@@ -37,6 +37,10 @@ class EntryEvent : FrameLayout {
 
     private val snapHelper = LinearSnapHelper()
 
+    private lateinit var location: String
+
+    private var view: View? = null
+
     private var fragmentBinding: AddEventFragmentBinding? = null
 
     private val list = mutableListOf("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24")
@@ -119,7 +123,8 @@ class EntryEvent : FrameLayout {
                 "$hour:$minutes",
                 "$hourEnd:$minutesEnd",
                 binding.titleText.text.toString(),
-                binding.description.text.toString()
+                binding.description.text.toString(),
+                location ?: ""
             )
             entryEvent?.addSchedule(schedule)
             entryEvent?.onCloseClicked()
@@ -134,9 +139,10 @@ class EntryEvent : FrameLayout {
         }
 
         val fragment = findViewById<View>(R.id.autocomplete_fragment)
-
+        view = fragment
         // Initialize the AutocompleteSupportFragment
         val autocompleteFragment = fragment.findFragment<Fragment>() as AutocompleteSupportFragment
+
         // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
 
@@ -145,6 +151,7 @@ class EntryEvent : FrameLayout {
             object : PlaceSelectionListener {
                 override fun onPlaceSelected(place: Place) {
                     Log.i("TAG", "Place: ${place.name}, ${place.id}")
+                    location = "place.name"
                 }
 
                 override fun onError(status: Status) {

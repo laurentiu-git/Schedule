@@ -76,7 +76,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                         schedule.startTime,
                         schedule.endTime,
                         schedule.taskName,
-                        schedule.description
+                        schedule.description,
+                        schedule.location
                     )
                     homeScheduleViewModel.updateAndReplace(scheduleInfo)
                 }
