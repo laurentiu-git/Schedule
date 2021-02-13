@@ -1,7 +1,10 @@
 package com.example.schedule.ui.fragments
 
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.DatePicker
 import androidx.activity.OnBackPressedCallback
@@ -10,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.schedule.BuildConfig
 import com.example.schedule.R
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.databinding.FragmentHomeBinding
@@ -17,6 +21,11 @@ import com.example.schedule.ui.adapters.ScheduleAdapter
 import com.example.schedule.ui.transitions.AddEventTransition
 import com.example.schedule.ui.transitions.EntryEventListener
 import com.example.schedule.viewmodels.HomeScheduleViewModel
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -29,6 +38,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     lateinit var homeScheduleViewModel: HomeScheduleViewModel
     @Inject
     lateinit var scheduleAdapter: ScheduleAdapter
+    val AUTOCOMPLETE_REQUEST_CODE = 1
+    private var location: String? = null
 
     private val cal = Calendar.getInstance()
     private lateinit var currentDate: String
@@ -77,9 +88,26 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                         schedule.endTime,
                         schedule.taskName,
                         schedule.description,
-                        schedule.location
+                        location?: ""
                     )
                     homeScheduleViewModel.updateAndReplace(scheduleInfo)
+                }
+
+                override fun searchLocation() {
+
+                    // Set the fields to specify which types of place data to
+                    // return after the user has made a selection.
+                    val fields = listOf(Place.Field.ID, Place.Field.NAME)
+
+                    // Start the autocomplete intent.
+                    val intent = context?.let {
+                        if (!Places.isInitialized()) {
+                            Places.initialize(it, BuildConfig.API_PLACES)
+                        }
+                        Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                                .build(it)
+                    }
+                    startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
                 }
             }
         )
@@ -149,6 +177,32 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     private fun getCurrentDate(date: Date): String {
         val dateFormat = SimpleDateFormat("EEE, MMM d", Locale.getDefault())
         return dateFormat.format(date)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    data?.let {
+                        val place = Autocomplete.getPlaceFromIntent(data)
+                        Log.i("TAG", "Place: ${place.name}, ${place.id}")
+                        location = place.name
+                    }
+                }
+                AutocompleteActivity.RESULT_ERROR -> {
+                    // TODO: Handle the error.
+                    data?.let {
+                        val status = Autocomplete.getStatusFromIntent(data)
+                        status.statusMessage?.let { it1 -> Log.i("TAG", it1) }
+                    }
+                }
+                Activity.RESULT_CANCELED -> {
+                    // The user canceled the operation.
+                }
+            }
+            return
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroyView() {

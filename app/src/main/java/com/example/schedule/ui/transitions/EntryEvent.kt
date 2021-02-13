@@ -124,41 +124,16 @@ class EntryEvent : FrameLayout {
                 "$hourEnd:$minutesEnd",
                 binding.titleText.text.toString(),
                 binding.description.text.toString(),
-                location ?: ""
+                ""
             )
             entryEvent?.addSchedule(schedule)
             entryEvent?.onCloseClicked()
         }
 
-        addPlaceListener()
-    }
-
-    private fun addPlaceListener() {
-        if (!Places.isInitialized()) {
-            Places.initialize(context, BuildConfig.API_PLACES)
+        //addPlaceListener()
+        binding.startTime.setOnClickListener {
+            entryEvent?.searchLocation()
         }
-
-        val fragment = findViewById<View>(R.id.autocomplete_fragment)
-        view = fragment
-        // Initialize the AutocompleteSupportFragment
-        val autocompleteFragment = fragment.findFragment<Fragment>() as AutocompleteSupportFragment
-
-        // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
-
-        // Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragment.setOnPlaceSelectedListener(
-            object : PlaceSelectionListener {
-                override fun onPlaceSelected(place: Place) {
-                    Log.i("TAG", "Place: ${place.name}, ${place.id}")
-                    location = "place.name"
-                }
-
-                override fun onError(status: Status) {
-                    Log.i("TAG", "An error occurred: $status")
-                }
-            }
-        )
     }
 
     fun setAddEventListener(entryEventListener: EntryEventListener) {
@@ -187,4 +162,5 @@ class EntryEvent : FrameLayout {
 interface EntryEventListener {
     fun onCloseClicked()
     fun addSchedule(schedule: ScheduleInfo)
+    fun searchLocation()
 }
