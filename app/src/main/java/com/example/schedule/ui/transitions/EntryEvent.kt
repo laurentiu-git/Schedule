@@ -119,6 +119,7 @@ class EntryEvent : FrameLayout {
                 ""
             )
             entryEvent?.addSchedule(schedule)
+            hideKeyboardFrom(context, it)
             entryEvent?.onCloseClicked()
         }
 
