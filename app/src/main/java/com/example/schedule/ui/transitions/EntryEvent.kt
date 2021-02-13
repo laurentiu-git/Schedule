@@ -130,8 +130,7 @@ class EntryEvent : FrameLayout {
             entryEvent?.onCloseClicked()
         }
 
-        //addPlaceListener()
-        binding.startTime.setOnClickListener {
+        binding.location.setOnClickListener {
             entryEvent?.searchLocation()
         }
     }

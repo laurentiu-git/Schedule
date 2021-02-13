@@ -39,7 +39,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     @Inject
     lateinit var scheduleAdapter: ScheduleAdapter
     val AUTOCOMPLETE_REQUEST_CODE = 1
-    private var location: String? = null
+    private var location: String = ""
 
     private val cal = Calendar.getInstance()
     private lateinit var currentDate: String
@@ -88,7 +88,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                         schedule.endTime,
                         schedule.taskName,
                         schedule.description,
-                        location?: ""
+                        location
                     )
                     homeScheduleViewModel.updateAndReplace(scheduleInfo)
                 }
@@ -186,7 +186,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                     data?.let {
                         val place = Autocomplete.getPlaceFromIntent(data)
                         Log.i("TAG", "Place: ${place.name}, ${place.id}")
-                        location = place.name
+                        place.name?.let {
+                            location = it
+                        } ?: ""
                     }
                 }
                 AutocompleteActivity.RESULT_ERROR -> {
