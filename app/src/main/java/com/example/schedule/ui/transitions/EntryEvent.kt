@@ -2,27 +2,23 @@ package com.example.schedule.ui.transitions
 
 import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.findFragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
-import com.example.schedule.BuildConfig
 import com.example.schedule.R
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.databinding.AddEventFragmentBinding
 import com.example.schedule.ui.adapters.TimeAdapter
-import com.google.android.gms.common.api.Status
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.example.schedule.ui.fragments.HomeFragment
+import com.example.schedule.ui.fragments.SetLocation
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -36,10 +32,6 @@ class EntryEvent : FrameLayout {
     lateinit var minutesAdapter: TimeAdapter
 
     private val snapHelper = LinearSnapHelper()
-
-    private lateinit var location: String
-
-    private var view: View? = null
 
     private var fragmentBinding: AddEventFragmentBinding? = null
 
@@ -133,10 +125,34 @@ class EntryEvent : FrameLayout {
         binding.location.setOnClickListener {
             entryEvent?.searchLocation()
         }
+
+        val homeFragment = getForegroundFragment() as HomeFragment
+
+        homeFragment.setLocationListener(
+            object : SetLocation {
+                override fun setLocation(location: String) {
+                    binding.location.text = location
+                }
+            }
+        )
     }
 
     fun setAddEventListener(entryEventListener: EntryEventListener) {
         this.entryEvent = entryEventListener
+    }
+    private fun getForegroundFragment(): Fragment? {
+        val navHostFragment: Fragment? = getActivity()?.supportFragmentManager?.findFragmentById(R.id.navHostFragment)
+        return if (navHostFragment == null) null else navHostFragment.childFragmentManager.fragments[0]
+    }
+    private fun getActivity(): FragmentActivity? {
+        var context = context
+        while (context is ContextWrapper) {
+            if (context is FragmentActivity) {
+                return context
+            }
+            context = context.baseContext
+        }
+        return null
     }
 
     private fun hideKeyboardFrom(context: Context, view: View) {

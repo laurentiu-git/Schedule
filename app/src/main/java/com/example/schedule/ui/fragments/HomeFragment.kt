@@ -40,7 +40,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     lateinit var scheduleAdapter: ScheduleAdapter
     val AUTOCOMPLETE_REQUEST_CODE = 1
     private var location: String = ""
-
+    private var locationListener: SetLocation? = null
     private val cal = Calendar.getInstance()
     private lateinit var currentDate: String
 
@@ -105,7 +105,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                             Places.initialize(it, BuildConfig.API_PLACES)
                         }
                         Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
-                                .build(it)
+                            .build(it)
                     }
                     startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
                 }
@@ -189,6 +189,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                         place.name?.let {
                             location = it
                         } ?: ""
+                        locationListener?.setLocation(location)
                     }
                 }
                 AutocompleteActivity.RESULT_ERROR -> {
@@ -210,6 +211,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     override fun onDestroyView() {
         super.onDestroyView()
         fragmentBinding?.homeRecyclerView?.adapter = null
+        this.locationListener = null
         fragmentBinding = null
     }
+    fun setLocationListener(locationListener: SetLocation) {
+        this.locationListener = locationListener
+    }
+}
+
+interface SetLocation {
+    fun setLocation(location: String)
 }
