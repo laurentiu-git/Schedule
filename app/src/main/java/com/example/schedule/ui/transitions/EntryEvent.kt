@@ -18,8 +18,9 @@ import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.databinding.AddEventFragmentBinding
 import com.example.schedule.ui.adapters.TimeAdapter
 import com.example.schedule.ui.fragments.HomeFragment
-import com.example.schedule.ui.fragments.SetLocation
 import com.example.schedule.util.Constants
+import com.example.schedule.util.EntryEventListener
+import com.example.schedule.util.LocationListener
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -123,8 +124,8 @@ class EntryEvent : FrameLayout {
 
         val homeFragment = getForegroundFragment() as HomeFragment
 
-        homeFragment.setLocationListener(
-            object : SetLocation {
+        homeFragment.setLocation(
+            object : LocationListener {
                 override fun setLocation(location: String) {
                     binding.location.text = location
                 }
@@ -169,8 +170,3 @@ class EntryEvent : FrameLayout {
     }
 }
 
-interface EntryEventListener {
-    fun onCloseClicked()
-    fun addSchedule(schedule: ScheduleInfo)
-    fun searchLocation()
-}

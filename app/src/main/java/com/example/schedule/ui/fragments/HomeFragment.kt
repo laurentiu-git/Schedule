@@ -19,7 +19,8 @@ import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.databinding.FragmentHomeBinding
 import com.example.schedule.ui.adapters.ScheduleAdapter
 import com.example.schedule.ui.transitions.AddEventTransition
-import com.example.schedule.ui.transitions.EntryEventListener
+import com.example.schedule.util.EntryEventListener
+import com.example.schedule.util.LocationListener
 import com.example.schedule.viewmodels.HomeScheduleViewModel
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
@@ -40,7 +41,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     lateinit var scheduleAdapter: ScheduleAdapter
     val AUTOCOMPLETE_REQUEST_CODE = 1
     private var location: String = ""
-    private var locationListener: SetLocation? = null
+    private var locationListener: LocationListener? = null
     private val cal = Calendar.getInstance()
     private lateinit var currentDate: String
 
@@ -214,11 +215,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         this.locationListener = null
         fragmentBinding = null
     }
-    fun setLocationListener(locationListener: SetLocation) {
+    fun setLocation(locationListener: LocationListener) {
         this.locationListener = locationListener
     }
-}
-
-interface SetLocation {
-    fun setLocation(location: String)
 }
