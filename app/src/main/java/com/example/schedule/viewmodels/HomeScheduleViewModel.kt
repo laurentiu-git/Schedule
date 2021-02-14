@@ -46,4 +46,8 @@ class HomeScheduleViewModel @ViewModelInject constructor(
             schedule.value = it
         }
     }
+
+    fun deleteSchedule(schedule: ScheduleInfo) = viewModelScope.launch {
+        scheduleItemsItemsRepository.deleteSchedule(schedule)
+    }
 }

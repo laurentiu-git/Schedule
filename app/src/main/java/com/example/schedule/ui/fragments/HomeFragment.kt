@@ -12,7 +12,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.BuildConfig
 import com.example.schedule.R
 import com.example.schedule.data.models.ScheduleInfo
@@ -28,6 +30,7 @@ import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.* //ktlint-disable
@@ -144,11 +147,51 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
         homeScheduleViewModel.schedule.observe(
             viewLifecycleOwner,
-            {
-                result ->
+            { result ->
                 scheduleAdapter.differ.submitList(result)
             }
         )
+
+      /*  binding.homeRecyclerView.setOnTouchListener(object: OnSwipeTouchListener(view.context) {
+            override fun onSwipeLeft() {
+                val nextDay = 1
+                binding.dayId.text = getDay(nextDay)
+                homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+            }
+
+            override fun onSwipeRight() {
+                val previousDay = -1
+                binding.dayId.text = getDay(previousDay)
+                homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+            }
+        })
+
+       */
+
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT,
+        ) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val schedule = scheduleAdapter.differ.currentList[position]
+                homeScheduleViewModel.deleteSchedule(schedule)
+                Snackbar.make(view, "Schedule Deleted", Snackbar.LENGTH_LONG).apply {
+                    setAction("Undo") {
+                        homeScheduleViewModel.updateAndReplace(schedule)
+                    }
+                    show()
+                }
+            }
+        }
+
+        ItemTouchHelper(itemTouchHelperCallback).apply {
+            attachToRecyclerView(binding.homeRecyclerView)
+        }
     }
 
     private fun pickDate(view: View) {
