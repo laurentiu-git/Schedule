@@ -95,11 +95,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                 }
 
                 override fun searchLocation() {
-
-                    // Set the fields to specify which types of place data to
-                    // return after the user has made a selection.
                     val fields = listOf(Place.Field.ID, Place.Field.NAME)
-
                     // Start the autocomplete intent.
                     val intent = context?.let {
                         if (!Places.isInitialized()) {
@@ -165,6 +161,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         cal.set(year, month, dayOfMonth)
         fragmentBinding?.dayId?.text = getCurrentDate(cal.time)
+        homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
     }
 
     private fun getDay(position: Int): String {
