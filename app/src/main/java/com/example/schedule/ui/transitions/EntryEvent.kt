@@ -169,4 +169,3 @@ class EntryEvent : FrameLayout {
         fragmentBinding = null
     }
 }
-
