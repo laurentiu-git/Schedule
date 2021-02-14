@@ -19,6 +19,7 @@ import com.example.schedule.databinding.AddEventFragmentBinding
 import com.example.schedule.ui.adapters.TimeAdapter
 import com.example.schedule.ui.fragments.HomeFragment
 import com.example.schedule.ui.fragments.SetLocation
+import com.example.schedule.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -34,13 +35,6 @@ class EntryEvent : FrameLayout {
     private val snapHelper = LinearSnapHelper()
 
     private var fragmentBinding: AddEventFragmentBinding? = null
-
-    private val list = mutableListOf("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24")
-    private val listMinutes = mutableListOf(
-        "00",
-        "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53",
-        "54", "55", "56", "57", "58", "59"
-    )
 
     constructor(context: Context) : super(context) {
         init()
@@ -72,7 +66,7 @@ class EntryEvent : FrameLayout {
             hideKeyboardFrom(context, it)
         }
 
-        timeAdapter.differ.submitList(list)
+        timeAdapter.differ.submitList(Constants.hourList)
         binding.hourList.apply {
             adapter = timeAdapter
             layoutManager = LinearLayoutManager(context)
@@ -80,7 +74,7 @@ class EntryEvent : FrameLayout {
         binding.hourList.scrollToPosition(Integer.MAX_VALUE / 2)
         snapHelper.attachToRecyclerView(binding.hourList)
 
-        minutesAdapter.differ.submitList(listMinutes)
+        minutesAdapter.differ.submitList(Constants.minutesList)
         binding.minutesList.apply {
             adapter = minutesAdapter
             layoutManager = LinearLayoutManager(context)
