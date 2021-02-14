@@ -23,6 +23,7 @@ import com.example.schedule.ui.adapters.ScheduleAdapter
 import com.example.schedule.ui.transitions.AddEventTransition
 import com.example.schedule.util.EntryEventListener
 import com.example.schedule.util.LocationListener
+import com.example.schedule.util.OnSwipeTouchListener
 import com.example.schedule.viewmodels.HomeScheduleViewModel
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
@@ -152,21 +153,21 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
             }
         )
 
-      /*  binding.homeRecyclerView.setOnTouchListener(object: OnSwipeTouchListener(view.context) {
-            override fun onSwipeLeft() {
-                val nextDay = 1
-                binding.dayId.text = getDay(nextDay)
-                homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
-            }
+        binding.homeFrag.setOnTouchListener(
+            object : OnSwipeTouchListener(view.context) {
+                override fun onSwipeLeft() {
+                    val nextDay = 1
+                    binding.dayId.text = getDay(nextDay)
+                    homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+                }
 
-            override fun onSwipeRight() {
-                val previousDay = -1
-                binding.dayId.text = getDay(previousDay)
-                homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+                override fun onSwipeRight() {
+                    val previousDay = -1
+                    binding.dayId.text = getDay(previousDay)
+                    homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+                }
             }
-        })
-
-       */
+        )
 
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
