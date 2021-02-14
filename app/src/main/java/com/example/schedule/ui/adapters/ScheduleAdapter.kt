@@ -15,14 +15,17 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
     class ScheduleAdapterViewHolder constructor(private val binding: ItemScheduleBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(schedule: ScheduleInfo) {
-            binding.year.text = schedule.startTime + " " + schedule.endTime
+            binding.location.text = schedule.location
+            binding.startTime.text = schedule.startTime
+            binding.endTime.text = schedule.endTime
             binding.description.text = schedule.description
             binding.taskName.text = schedule.taskName
 
-            ObjectAnimator.ofFloat(binding.timelineCircle, "translationY", 100f).apply {
+          /*  ObjectAnimator.ofFloat(binding.movingCircle, "translationY", 100f).apply {
                 duration = 2000
                 start()
             }
+           */
         }
 
         companion object {
