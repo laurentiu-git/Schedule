@@ -1,6 +1,5 @@
 package com.example.schedule.ui.adapters
 
-import android.animation.ObjectAnimator
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
