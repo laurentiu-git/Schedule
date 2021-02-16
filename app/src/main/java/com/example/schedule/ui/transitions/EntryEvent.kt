@@ -22,6 +22,7 @@ import com.example.schedule.util.Constants
 import com.example.schedule.util.EntryEventListener
 import com.example.schedule.util.LocationListener
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -104,9 +105,7 @@ class EntryEvent : FrameLayout {
             val minutesEnd = minutesAdapter.getTimeMinutes(snapHelper.getSnapPosition(binding.minutesTimeForEnd))
             val schedule = ScheduleInfo(
                 null,
-                "",
-                "",
-                "",
+                Calendar.getInstance().time,
                 "$hour:$minutes",
                 "$hourEnd:$minutesEnd",
                 binding.titleText.text.toString(),

@@ -81,14 +81,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                 }
 
                 override fun addSchedule(schedule: ScheduleInfo) {
-                    val year = cal.get(Calendar.YEAR).toString()
-                    val month = cal.get(Calendar.MONTH).toString()
-                    val day = cal.get(Calendar.DAY_OF_MONTH).toString()
                     val scheduleInfo = ScheduleInfo(
                         null,
-                        year,
-                        month,
-                        day,
+                            homeScheduleViewModel.getDate(0),
                         schedule.startTime,
                         schedule.endTime,
                         schedule.taskName,
@@ -135,17 +130,15 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
 
         binding.arrowLeft.setOnClickListener {
             val previousDay = -1
-            binding.dayId.text = getDay(previousDay)
-            homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+            binding.dayId.text = getCurrentDate(homeScheduleViewModel.getDate(previousDay, true))
         }
 
         binding.arrowRight.setOnClickListener {
             val nextDay = 1
-            binding.dayId.text = getDay(nextDay)
-            homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+            binding.dayId.text = getCurrentDate(homeScheduleViewModel.getDate(nextDay, true))
         }
 
-        homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+        homeScheduleViewModel.schedule(homeScheduleViewModel.getDate(0))
         homeScheduleViewModel.schedule.observe(
             viewLifecycleOwner,
             { result ->
@@ -153,22 +146,22 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
             }
         )
 
-        binding.homeFrag.setOnTouchListener(
+      /*  binding.homeFrag.setOnTouchListener(
             object : OnSwipeTouchListener(view.context) {
                 override fun onSwipeLeft() {
                     val nextDay = 1
-                    binding.dayId.text = getDay(nextDay)
-                    homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+                    binding.dayId.text = getCurrentDate(homeScheduleViewModel.getDate(nextDay))
                 }
 
                 override fun onSwipeRight() {
                     val previousDay = -1
-                    binding.dayId.text = getDay(previousDay)
-                    homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+                    binding.dayId.text = getCurrentDate(homeScheduleViewModel.getDate(previousDay))
                 }
             }
         )
 
+
+       */
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT,
@@ -196,16 +189,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     }
 
     private fun pickDate(view: View) {
-        val year = cal.get(Calendar.YEAR)
-        val month = cal.get(Calendar.MONTH)
-        val day = cal.get(Calendar.DAY_OF_MONTH)
-        DatePickerDialog(view.context, this, year, month, day).show()
+        DatePickerDialog(view.context, this, cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show()
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         cal.set(year, month, dayOfMonth)
         fragmentBinding?.dayId?.text = getCurrentDate(cal.time)
-        homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+        homeScheduleViewModel.schedule(homeScheduleViewModel.getDate(0))
     }
 
     private fun getDay(position: Int): String {

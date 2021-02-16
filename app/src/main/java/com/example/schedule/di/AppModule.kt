@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.util.*
 import javax.inject.Singleton
 
 @Module
@@ -18,4 +19,8 @@ object AppModule {
     fun proivdeShopDatabaseInstance(
         @ApplicationContext context: Context
     ) = ScheduleDatabase(context)
+
+    @Provides
+    @Singleton
+    fun provideCalendarInstance() = Calendar.getInstance()
 }
