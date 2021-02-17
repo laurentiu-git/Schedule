@@ -12,7 +12,9 @@ data class ScheduleInfo(
     var year: String,
     var month: String,
     var day: String,
-    var hour: String,
+    var startTime: String,
+    var endTime: String,
     var taskName: String,
-    var description: String
+    var description: String,
+    var location: String,
 )

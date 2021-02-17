@@ -1,28 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
+    android:id="@+id/homeFrag"
     android:layout_width="match_parent">
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             android:layout_marginBottom="25dp"
             android:contentDescription="TODO"
             android:src="@drawable/ic_add"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:visibility="visible" />
 
 
         <TextView
@@ -30,75 +25,59 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/today"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@id/entryEvent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.025" />
+            android:layout_marginTop="10dp"
+            android:textSize="18sp"
+            android:layout_centerHorizontal="true"/>
 
         <ImageButton
             android:id="@+id/arrowDown"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginStart="5dp"
             android:background="@null"
             android:src="@drawable/ic_arrow_down"
-            app:layout_constraintBottom_toBottomOf="@+id/dayId"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.005"
-            app:layout_constraintStart_toEndOf="@+id/dayId"
-            app:layout_constraintTop_toTopOf="@+id/dayId"
-            app:layout_constraintVertical_bias="1" />
+            android:layout_toEndOf="@id/dayId"/>
 
         <ImageButton
             android:id="@+id/arrowLeft"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:background="@null"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="13dp"
             android:src="@drawable/ic_arrow_left"
-            app:layout_constraintBottom_toBottomOf="@+id/dayId"
-            app:layout_constraintEnd_toStartOf="@+id/dayId"
-            app:layout_constraintHorizontal_bias="0.9"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/dayId"
-            app:layout_constraintVertical_bias="1.0" />
+            android:layout_toStartOf="@id/dayId"/>
 
         <ImageButton
             android:id="@+id/arrowRight"
             android:layout_width="20dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginStart="5dp"
             android:layout_height="20dp"
             android:background="@null"
             android:src="@drawable/ic_arrow_right"
-            app:layout_constraintBottom_toBottomOf="@+id/dayId"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.2"
-            app:layout_constraintStart_toEndOf="@+id/dayId"
-            app:layout_constraintTop_toTopOf="@+id/dayId" />
+            android:layout_toEndOf="@id/arrowDown" />
 
         <com.example.schedule.ui.transitions.EntryEvent
             android:id="@+id/entryEvent"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:elevation="10sp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/dayId"
             android:visibility="invisible"
             android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:elevation="12dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dayId"/>
+            android:focusable="true" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/homeRecyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dayId"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dayId" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</FrameLayout>
+</RelativeLayout>

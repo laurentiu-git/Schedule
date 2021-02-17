@@ -2,20 +2,26 @@ package com.example.schedule.ui.transitions
 
 import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.util.AttributeSet
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.* //ktlint-disable
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.FrameLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.example.schedule.R
 import com.example.schedule.data.models.ScheduleInfo
+import com.example.schedule.databinding.AddEventFragmentBinding
 import com.example.schedule.ui.adapters.TimeAdapter
+import com.example.schedule.ui.fragments.HomeFragment
+import com.example.schedule.util.Constants
+import com.example.schedule.util.EntryEventListener
+import com.example.schedule.util.LocationListener
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.* //ktlint-disable
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -29,12 +35,7 @@ class EntryEvent : FrameLayout {
 
     private val snapHelper = LinearSnapHelper()
 
-    private val list = mutableListOf("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24")
-    private val listMinutes = mutableListOf(
-        "00",
-        "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53",
-        "54", "55", "56", "57", "58", "59"
-    )
+    private var fragmentBinding: AddEventFragmentBinding? = null
 
     constructor(context: Context) : super(context) {
         init()
@@ -48,68 +49,106 @@ class EntryEvent : FrameLayout {
     }
 
     private fun init() {
-        View.inflate(context, R.layout.add_event_fragment, this)
+        val view = View.inflate(context, R.layout.add_event_fragment, this)
+        val binding = AddEventFragmentBinding.bind(view)
+        fragmentBinding = binding
 
         setOnClickListener {
             entryEvent?.onCloseClicked()
             hideKeyboardFrom(context, it)
         }
 
-        val closeElement = findViewById<TextView>(R.id.close)
-        closeElement.setOnClickListener {
+        binding.close.setOnClickListener {
             entryEvent?.onCloseClicked()
             hideKeyboardFrom(context, it)
         }
 
-        val addLayout = findViewById<ConstraintLayout>(R.id.addLayout)
-        addLayout.setOnClickListener {
+        binding.addLayout.setOnClickListener {
             hideKeyboardFrom(context, it)
         }
 
-        val recyclerView = findViewById<RecyclerView>(R.id.hourList)
-        val recyclerViewMinutes = findViewById<RecyclerView>(R.id.minutesList)
-
-        timeAdapter.differ.submitList(list)
-
-        recyclerView.apply {
+        timeAdapter.differ.submitList(Constants.hourList)
+        binding.hourList.apply {
             adapter = timeAdapter
             layoutManager = LinearLayoutManager(context)
         }
-        recyclerView.scrollToPosition(Integer.MAX_VALUE / 2)
-        snapHelper.attachToRecyclerView(recyclerView)
+        binding.hourList.scrollToPosition(Integer.MAX_VALUE / 2)
+        snapHelper.attachToRecyclerView(binding.hourList)
 
-        minutesAdapter.differ.submitList(listMinutes)
-
-        recyclerViewMinutes.apply {
+        minutesAdapter.differ.submitList(Constants.minutesList)
+        binding.minutesList.apply {
             adapter = minutesAdapter
             layoutManager = LinearLayoutManager(context)
         }
+        binding.minutesList.scrollToPosition(Integer.MAX_VALUE / 2)
+        LinearSnapHelper().attachToRecyclerView(binding.minutesList)
 
-        recyclerViewMinutes.scrollToPosition(Integer.MAX_VALUE / 2)
-        LinearSnapHelper().attachToRecyclerView(recyclerViewMinutes)
+        binding.hourTimeForEnd.apply {
+            adapter = timeAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+        binding.hourTimeForEnd.scrollToPosition(Integer.MAX_VALUE / 2)
+        LinearSnapHelper().attachToRecyclerView(binding.hourTimeForEnd)
 
-        val title = findViewById<EditText>(R.id.titleText)
-        val description = findViewById<EditText>(R.id.description)
+        binding.minutesTimeForEnd.apply {
+            adapter = minutesAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+        binding.minutesTimeForEnd.scrollToPosition(Integer.MAX_VALUE / 2)
+        LinearSnapHelper().attachToRecyclerView(binding.minutesTimeForEnd)
 
-        val addBtn = findViewById<Button>(R.id.button)
-        addBtn.setOnClickListener {
-            val hour = timeAdapter.getTime(snapHelper.getSnapPosition(recyclerView))
-            val minutes = minutesAdapter.getTimeMinutes(snapHelper.getSnapPosition(recyclerViewMinutes))
+        binding.addBtn.setOnClickListener {
+            val hour = timeAdapter.getTime(snapHelper.getSnapPosition(binding.hourList))
+            val hourEnd = timeAdapter.getTime(snapHelper.getSnapPosition(binding.hourTimeForEnd))
+            val minutes = minutesAdapter.getTimeMinutes(snapHelper.getSnapPosition(binding.minutesList))
+            val minutesEnd = minutesAdapter.getTimeMinutes(snapHelper.getSnapPosition(binding.minutesTimeForEnd))
             val schedule = ScheduleInfo(
                 null,
                 "",
                 "",
                 "",
                 "$hour:$minutes",
-                title.text.toString(),
-                description.text.toString()
+                "$hourEnd:$minutesEnd",
+                binding.titleText.text.toString(),
+                binding.description.text.toString(),
+                ""
             )
             entryEvent?.addSchedule(schedule)
+            hideKeyboardFrom(context, it)
+            entryEvent?.onCloseClicked()
         }
+
+        binding.location.setOnClickListener {
+            entryEvent?.searchLocation()
+        }
+
+        val homeFragment = getForegroundFragment() as HomeFragment
+
+        homeFragment.setLocation(
+            object : LocationListener {
+                override fun setLocation(location: String) {
+                    binding.location.text = location
+                }
+            }
+        )
     }
 
     fun setAddEventListener(entryEventListener: EntryEventListener) {
         this.entryEvent = entryEventListener
+    }
+    private fun getForegroundFragment(): Fragment? {
+        val navHostFragment: Fragment? = getActivity()?.supportFragmentManager?.findFragmentById(R.id.navHostFragment)
+        return if (navHostFragment == null) null else navHostFragment.childFragmentManager.fragments[0]
+    }
+    private fun getActivity(): FragmentActivity? {
+        var context = context
+        while (context is ContextWrapper) {
+            if (context is FragmentActivity) {
+                return context
+            }
+            context = context.baseContext
+        }
+        return null
     }
 
     private fun hideKeyboardFrom(context: Context, view: View) {
@@ -124,9 +163,9 @@ class EntryEvent : FrameLayout {
         val snapView = findSnapView(layoutManager) ?: return RecyclerView.NO_POSITION
         return layoutManager.getPosition(snapView)
     }
-}
 
-interface EntryEventListener {
-    fun onCloseClicked()
-    fun addSchedule(schedule: ScheduleInfo)
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        fragmentBinding = null
+    }
 }

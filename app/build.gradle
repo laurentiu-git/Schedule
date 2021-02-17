@@ -26,6 +26,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        buildTypes.each {
+            it.buildConfigField 'String', 'API_PLACES', "\"$System.env.API_PLACES\""
+        }
     }
 
     buildFeatures {
@@ -79,4 +82,9 @@ dependencies {
     implementation "androidx.room:room-ktx:2.2.5"
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0")
 
+    //AutoCompleteSearch for location
+    implementation "com.google.android.libraries.places:places:2.4.0"
+
+    //fragment
+    implementation "androidx.fragment:fragment-ktx:1.2.5"
 }
