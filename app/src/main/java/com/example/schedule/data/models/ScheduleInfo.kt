@@ -2,7 +2,7 @@ package com.example.schedule.data.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.*
+import java.util.* //ktlint-disable
 
 @Entity(
     tableName = "schedules"

@@ -1,15 +1,16 @@
 package com.example.schedule.repository
 
+import androidx.lifecycle.MutableLiveData
 import com.example.schedule.data.local.ScheduleDatabase
 import com.example.schedule.data.models.ScheduleInfo
-import java.text.SimpleDateFormat
-import java.util.*
+import java.util.* //ktlint-disable
 import javax.inject.Inject
 
 class ScheduleItemsRepository @Inject constructor(
-        val db: ScheduleDatabase,
-        val cal: Calendar
+    val db: ScheduleDatabase,
+    val cal: Calendar
 ) {
+    private val liveDate: MutableLiveData<Date> = MutableLiveData()
 
     suspend fun getScheduleItems() = "Yolo"
 
@@ -17,11 +18,10 @@ class ScheduleItemsRepository @Inject constructor(
 
     suspend fun deleteSchedule(schedule: ScheduleInfo) = db.getScheduleDao().deleteResult(schedule)
 
-     fun getSchedules(date: Date) = db.getScheduleDao().getSchedule(date)
+    fun getSchedules(date: Date) = db.getScheduleDao().getSchedule(date)
 
-     fun getDate(amount: Int): Date {
-         cal.add(Calendar.DATE, amount)
-         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-         return dateFormat.parse(dateFormat.format(cal.time))
-     }
+    fun getDate(amount: Int): Date {
+        cal.add(Calendar.DATE, amount)
+        return cal.time
+    }
 }

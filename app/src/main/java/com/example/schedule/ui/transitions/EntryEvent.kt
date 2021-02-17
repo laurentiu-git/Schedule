@@ -22,7 +22,7 @@ import com.example.schedule.util.Constants
 import com.example.schedule.util.EntryEventListener
 import com.example.schedule.util.LocationListener
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
+import java.util.* //ktlint-disable
 import javax.inject.Inject
 
 @AndroidEntryPoint

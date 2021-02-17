@@ -1,15 +1,12 @@
 package com.example.schedule.viewmodels
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.* //ktlint-disable
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.repository.ScheduleItemsRepository
 import com.example.schedule.util.Resource
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.* //ktlint-disable
 
 class HomeScheduleViewModel @ViewModelInject constructor(
     private val scheduleItemsItemsRepository: ScheduleItemsRepository
@@ -17,6 +14,9 @@ class HomeScheduleViewModel @ViewModelInject constructor(
 
     val daySchedule: MutableLiveData<Resource<String>> = MutableLiveData()
     val schedule = MediatorLiveData<List<ScheduleInfo>>()
+
+    val date: MutableLiveData<Date> = MutableLiveData()
+    var someSchedule: LiveData<List<ScheduleInfo>> = MutableLiveData()
 
     init {
         getDay()
@@ -51,12 +51,23 @@ class HomeScheduleViewModel @ViewModelInject constructor(
     }
 
     fun getDate(amount: Int): Date {
-      //  schedule(scheduleItemsItemsRepository.getDate(amount))
-        return scheduleItemsItemsRepository.getDate(amount)
+        //  schedule(scheduleItemsItemsRepository.getDate(amount))
+        val currentDate = scheduleItemsItemsRepository.getDate(amount)
+        date.postValue(currentDate)
+        return currentDate
     }
 
-    fun getDate(amount: Int, swipe: Boolean): Date {
-        schedule(scheduleItemsItemsRepository.getDate(amount))
-        return getDate(0)
+    /*  fun getDate(amount: Int, swipe: Boolean): Date {
+          schedule(scheduleItemsItemsRepository.getDate(amount))
+          return getDate(0)
+      }
+     */
+
+    fun currentScheduleList() {
+        someSchedule = Transformations.switchMap(
+            date
+        ) { dateHasChanged ->
+            scheduleItemsItemsRepository.getSchedules(dateHasChanged)
+        }
     }
 }

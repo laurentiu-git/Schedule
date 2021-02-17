@@ -1,7 +1,7 @@
 package com.example.schedule.data.converters
 
 import androidx.room.TypeConverter
-import java.util.*
+import java.util.* //ktlint-disable
 
 class Converters {
 
