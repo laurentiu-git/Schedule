@@ -21,9 +21,9 @@ import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.databinding.FragmentHomeBinding
 import com.example.schedule.ui.adapters.ScheduleAdapter
 import com.example.schedule.ui.transitions.AddEventTransition
+import com.example.schedule.util.Constants.Companion.AUTOCOMPLETE_REQUEST_CODE
 import com.example.schedule.util.EntryEventListener
 import com.example.schedule.util.LocationListener
-import com.example.schedule.util.OnSwipeTouchListener
 import com.example.schedule.viewmodels.HomeScheduleViewModel
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
@@ -40,14 +40,16 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSetListener {
     private var fragmentBinding: FragmentHomeBinding? = null
+
     lateinit var homeScheduleViewModel: HomeScheduleViewModel
     @Inject
     lateinit var scheduleAdapter: ScheduleAdapter
-    val AUTOCOMPLETE_REQUEST_CODE = 1
+
     private var location: String = ""
     private var locationListener: LocationListener? = null
-    private val cal = Calendar.getInstance()
-    private lateinit var currentDate: String
+
+    @Inject
+    lateinit var cal: Calendar
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -62,9 +64,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         }
 
         val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-
-        val simpleDateFormat = SimpleDateFormat("EEE, MMM d", Locale.getDefault())
-        currentDate = simpleDateFormat.format(Date())
 
         binding.addEvent.setOnClickListener {
             val animation = AddEventTransition(binding.addEvent, binding.entryEvent)
@@ -81,14 +80,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                 }
 
                 override fun addSchedule(schedule: ScheduleInfo) {
-                    val year = cal.get(Calendar.YEAR).toString()
-                    val month = cal.get(Calendar.MONTH).toString()
-                    val day = cal.get(Calendar.DAY_OF_MONTH).toString()
                     val scheduleInfo = ScheduleInfo(
                         null,
-                        year,
-                        month,
-                        day,
+                        homeScheduleViewModel.getDate(0),
                         schedule.startTime,
                         schedule.endTime,
                         schedule.taskName,
@@ -135,40 +129,46 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
 
         binding.arrowLeft.setOnClickListener {
             val previousDay = -1
-            binding.dayId.text = getDay(previousDay)
-            homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+            homeScheduleViewModel.getDate(previousDay)
         }
 
         binding.arrowRight.setOnClickListener {
             val nextDay = 1
-            binding.dayId.text = getDay(nextDay)
-            homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+            homeScheduleViewModel.getDate(nextDay)
         }
 
-        homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
-        homeScheduleViewModel.schedule.observe(
+        homeScheduleViewModel.getDate(0)
+        homeScheduleViewModel.date.observe(
+            viewLifecycleOwner,
+            {
+                result ->
+                val dateFormat = SimpleDateFormat("EEE, MMM d", Locale.getDefault())
+                binding.dayId.text = dateFormat.format(result)
+            }
+        )
+
+        homeScheduleViewModel.currentScheduleList()
+        homeScheduleViewModel.scheduleList.observe(
             viewLifecycleOwner,
             { result ->
                 scheduleAdapter.differ.submitList(result)
             }
         )
 
-        binding.homeFrag.setOnTouchListener(
+      /*  binding.homeFrag.setOnTouchListener(
             object : OnSwipeTouchListener(view.context) {
                 override fun onSwipeLeft() {
                     val nextDay = 1
-                    binding.dayId.text = getDay(nextDay)
-                    homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+                    binding.dayId.text = getCurrentDate(homeScheduleViewModel.getDate(nextDay))
                 }
 
                 override fun onSwipeRight() {
                     val previousDay = -1
-                    binding.dayId.text = getDay(previousDay)
-                    homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+                    binding.dayId.text = getCurrentDate(homeScheduleViewModel.getDate(previousDay))
                 }
             }
         )
-
+       */
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT,
@@ -196,29 +196,18 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     }
 
     private fun pickDate(view: View) {
-        val year = cal.get(Calendar.YEAR)
-        val month = cal.get(Calendar.MONTH)
-        val day = cal.get(Calendar.DAY_OF_MONTH)
-        DatePickerDialog(view.context, this, year, month, day).show()
+        DatePickerDialog(
+            view.context,
+            this,
+            cal.get(Calendar.YEAR),
+            cal.get(Calendar.MONTH),
+            cal.get(Calendar.DAY_OF_MONTH)
+        ).show()
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         cal.set(year, month, dayOfMonth)
-        fragmentBinding?.dayId?.text = getCurrentDate(cal.time)
-        homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
-    }
-
-    private fun getDay(position: Int): String {
-        cal.add(Calendar.DATE, position)
-        return if (currentDate != getCurrentDate(cal.time))
-            getCurrentDate(cal.time)
-        else
-            "Today"
-    }
-
-    private fun getCurrentDate(date: Date): String {
-        val dateFormat = SimpleDateFormat("EEE, MMM d", Locale.getDefault())
-        return dateFormat.format(date)
+        homeScheduleViewModel.getDate(0)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -40,7 +40,7 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
     private val differCallback = object : DiffUtil.ItemCallback<ScheduleInfo>() {
 
         override fun areItemsTheSame(oldItem: ScheduleInfo, newItem: ScheduleInfo): Boolean {
-            return oldItem == newItem
+            return oldItem.primaryKey == newItem.primaryKey
         }
 
         override fun areContentsTheSame(oldItem: ScheduleInfo, newItem: ScheduleInfo): Boolean {

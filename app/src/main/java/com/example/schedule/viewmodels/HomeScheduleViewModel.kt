@@ -1,53 +1,38 @@
 package com.example.schedule.viewmodels
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.* //ktlint-disable
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.repository.ScheduleItemsRepository
-import com.example.schedule.util.Resource
 import kotlinx.coroutines.launch
+import java.util.* //ktlint-disable
 
 class HomeScheduleViewModel @ViewModelInject constructor(
     private val scheduleItemsItemsRepository: ScheduleItemsRepository
 ) : ViewModel() {
 
-    val daySchedule: MutableLiveData<Resource<String>> = MutableLiveData()
-    var schedule = MediatorLiveData<List<ScheduleInfo>>()
-
-    init {
-        getDay()
-    }
-
-    private fun getDay() = viewModelScope.launch {
-        daySchedule.postValue(Resource.Loading())
-        val response = scheduleItemsItemsRepository.getScheduleItems()
-        daySchedule.postValue(scheduleItemsResponse(response))
-    }
-
-    private fun scheduleItemsResponse(response: String): Resource<String>? {
-        if (response == "Yolo" || response == "30-01-2021") {
-            return Resource.Success(response)
-        }
-
-        return Resource.Error("some error")
-    }
+    val date: MutableLiveData<Date> = MutableLiveData()
+    var scheduleList: LiveData<List<ScheduleInfo>> = MutableLiveData()
 
     fun updateAndReplace(schedule: ScheduleInfo) = viewModelScope.launch {
         scheduleItemsItemsRepository.updateAndReplace(schedule)
     }
 
-    fun getSchedule(day: String) = scheduleItemsItemsRepository.getSchedules(day)
-
-    fun schedule(day: String) {
-        schedule.addSource(scheduleItemsItemsRepository.getSchedules(day)) {
-            schedule.value = it
-        }
-    }
-
     fun deleteSchedule(schedule: ScheduleInfo) = viewModelScope.launch {
         scheduleItemsItemsRepository.deleteSchedule(schedule)
+    }
+
+    fun getDate(amount: Int): Date {
+        val currentDate = scheduleItemsItemsRepository.getDate(amount)
+        date.postValue(currentDate)
+        return currentDate
+    }
+
+    fun currentScheduleList() {
+        scheduleList = Transformations.switchMap(
+            date
+        ) { dateHasChanged ->
+            scheduleItemsItemsRepository.getSchedules(dateHasChanged)
+        }
     }
 }
