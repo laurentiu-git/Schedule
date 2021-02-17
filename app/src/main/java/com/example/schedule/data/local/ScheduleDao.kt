@@ -10,7 +10,7 @@ interface ScheduleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateAndReplace(result: ScheduleInfo): Long
 
-    @Query("SELECT * FROM schedules WHERE ABS(date-:date)  = 0")
+    @Query("SELECT * FROM schedules WHERE ABS(date-:date)  <= 86400000")
     fun getSchedule(date: Date): LiveData<List<ScheduleInfo>>
 
     @Delete

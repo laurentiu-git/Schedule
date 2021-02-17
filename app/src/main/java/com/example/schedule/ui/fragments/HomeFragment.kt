@@ -148,7 +148,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         )
 
         homeScheduleViewModel.currentScheduleList()
-        homeScheduleViewModel.someSchedule.observe(
+        homeScheduleViewModel.scheduleList.observe(
             viewLifecycleOwner,
             { result ->
                 scheduleAdapter.differ.submitList(result)
