@@ -13,129 +13,141 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:id="@+id/itemId"
-            android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/itemId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/taskName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title"
-                android:textAlignment="textStart"
-                android:textSize="20sp"
-                android:maxLength="50"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                android:layout_marginStart="20dp"
-                app:layout_constraintStart_toStartOf="@id/timeline_circle"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.125" />
+        <TextView
+            android:id="@+id/taskName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:maxLength="50"
+            android:text="@string/title"
+            android:textAlignment="textStart"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/timeline_circle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.125" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:id="@+id/showDescription"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_drop_down_circle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:padding="10dp"/>
+        <ImageView
+            android:id="@+id/showDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/ic_drop_down_circle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/description"
-                android:layout_width="wrap_content"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintTop_toBottomOf="@id/location"
-                android:layout_height="wrap_content"
-                android:maxLines="5"
-                android:text="@string/description"
-                android:textAlignment="textStart"
-                android:textSize="16sp"
-                android:layout_marginEnd="75dp"
-                app:layout_constrainedWidth="true"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/icLocation" />
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="75dp"
+            android:maxLines="5"
+            android:text="@string/description"
+            android:textAlignment="textStart"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/icLocation"
+            app:layout_constraintTop_toBottomOf="@id/location" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:id="@+id/icLocation"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_location"
-                app:layout_constraintEnd_toStartOf="@id/location"
-                app:layout_constraintTop_toTopOf="@id/taskName"
-                android:layout_marginTop="30dp"
-                app:layout_constraintStart_toStartOf="@id/taskName"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+        <ImageView
+            android:id="@+id/icLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/ic_location"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/location"
+            app:layout_constraintStart_toStartOf="@id/taskName"
+            app:layout_constraintTop_toTopOf="@id/taskName" />
 
-            <TextView
-                android:id="@+id/location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="location"
-                android:text="@string/location"
-                android:textAlignment="textStart"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@id/icLocation"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@id/location" />
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="location"
+            android:text="@string/location"
+            android:textAlignment="textStart"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/icLocation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/location" />
 
-            <TextView
-                android:id="@+id/startTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold|italic"
-                app:layout_constraintEnd_toStartOf="@+id/timeline_circle"
-                app:layout_constraintHorizontal_bias="0.4"
-                android:padding="5dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/startTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toStartOf="@+id/timeline_circle"
+            app:layout_constraintHorizontal_bias="0.4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-"
-                app:layout_constraintEnd_toEndOf="@id/endTime"
-                app:layout_constraintStart_toStartOf="@id/endTime"
-                app:layout_constraintTop_toBottomOf="@id/startTime"
-                app:layout_constraintBottom_toTopOf="@id/endTime"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            app:layout_constraintBottom_toTopOf="@id/endTime"
+            app:layout_constraintEnd_toEndOf="@id/endTime"
+            app:layout_constraintStart_toStartOf="@id/endTime"
+            app:layout_constraintTop_toBottomOf="@id/startTime" />
 
-            <TextView
-                android:id="@+id/endTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:textStyle="bold|italic"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/timeline_circle"
-                app:layout_constraintHorizontal_bias="0.4"
-                app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/endTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textStyle="bold|italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/timeline_circle"
+            app:layout_constraintHorizontal_bias="0.4"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <View
-                android:id="@+id/timeline_line"
-                android:layout_width="3dp"
-                android:layout_height="0dp"
-                android:background="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.164"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <View
+            android:id="@+id/timeline_line"
+            android:layout_width="3dp"
+            android:layout_height="0dp"
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.164"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:id="@+id/timeline_circle"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:background="@drawable/shape_circle"
-                app:layout_constraintEnd_toEndOf="@id/timeline_line"
-                app:layout_constraintStart_toStartOf="@id/timeline_line"
-                app:layout_constraintTop_toTopOf="@id/timeline_line"
-                app:layout_constraintBottom_toBottomOf="@id/timeline_line"/>
+        <View
+            android:id="@+id/timeline_circle"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:background="@drawable/shape_circle"
+            app:layout_constraintBottom_toBottomOf="@id/timeline_line"
+            app:layout_constraintEnd_toEndOf="@id/timeline_line"
+            app:layout_constraintStart_toStartOf="@id/timeline_line"
+            app:layout_constraintTop_toTopOf="@id/timeline_line" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:progress="45"
+            app:layout_constraintBottom_toBottomOf="@+id/location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.628"
+            app:layout_constraintStart_toEndOf="@+id/icLocation"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.943" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
