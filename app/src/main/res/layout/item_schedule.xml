@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardView"
+<com.google.android.material.card.MaterialCardView xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:cardCornerRadius="30dp"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cardCornerRadius="25dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,70 +19,96 @@
 
             <TextView
                 android:id="@+id/taskName"
-                android:layout_width="46dp"
-                android:layout_height="23dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/title"
                 android:textAlignment="textStart"
                 android:textSize="20sp"
+                android:maxLength="50"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.296"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toStartOf="@id/timeline_circle"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.125" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_drop_down_circle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:padding="10dp"/>
 
             <TextView
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
                 android:text="@string/description"
                 android:textAlignment="textStart"
                 android:textSize="18sp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.319"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/taskName"
-                app:layout_constraintVertical_bias="0.142" />
+                app:layout_constraintStart_toEndOf="@+id/timeline_line" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_location"
+                app:layout_constraintEnd_toStartOf="@id/location"
+                app:layout_constraintTop_toTopOf="@id/taskName"
+                android:layout_marginTop="30dp"
+                app:layout_constraintStart_toStartOf="@id/taskName"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <TextView
                 android:id="@+id/location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
                 android:hint="location"
                 android:text="@string/location"
                 android:textAlignment="textStart"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="9dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.883"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/location" />
 
             <TextView
                 android:id="@+id/startTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold|italic"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/timeline_circle"
-                app:layout_constraintHorizontal_bias="0.524"
+                app:layout_constraintHorizontal_bias="0.4"
+                android:padding="5dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.134" />
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-"
+                app:layout_constraintEnd_toEndOf="@id/endTime"
+                app:layout_constraintStart_toStartOf="@id/endTime"
+                app:layout_constraintTop_toBottomOf="@id/startTime"
+                app:layout_constraintBottom_toTopOf="@id/endTime"/>
 
             <TextView
                 android:id="@+id/endTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:textStyle="bold|italic"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/timeline_line"
-                app:layout_constraintHorizontal_bias="0.462"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.774" />
+                app:layout_constraintEnd_toStartOf="@+id/timeline_circle"
+                app:layout_constraintHorizontal_bias="0.4"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <View
                 android:id="@+id/timeline_line"
@@ -98,25 +119,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.164"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <View
                 android:id="@+id/timeline_circle"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:layout_marginTop="18dp"
                 android:background="@drawable/shape_circle"
-                android:elevation="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.15"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.05" />
+                app:layout_constraintEnd_toEndOf="@id/timeline_line"
+                app:layout_constraintStart_toStartOf="@id/timeline_line"
+                app:layout_constraintTop_toTopOf="@id/timeline_line"
+                app:layout_constraintBottom_toBottomOf="@id/timeline_line"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.google.android.material.card.MaterialCardView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
