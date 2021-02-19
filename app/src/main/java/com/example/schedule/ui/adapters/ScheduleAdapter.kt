@@ -1,7 +1,9 @@
 package com.example.schedule.ui.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -20,11 +22,13 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
             binding.description.text = schedule.description
             binding.taskName.text = schedule.taskName
 
-          /*  ObjectAnimator.ofFloat(binding.movingCircle, "translationY", 100f).apply {
-                duration = 2000
-                start()
+            binding.showDescription.setOnClickListener {
+                clickListener(binding.description.isVisible)
             }
-           */
+
+            binding.itemId.setOnClickListener {
+                clickListener(binding.description.isVisible)
+            }
         }
 
         companion object {
@@ -33,6 +37,13 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
                 val binding = ItemScheduleBinding.inflate(layoutInflater, parent, false)
 
                 return ScheduleAdapterViewHolder(binding)
+            }
+        }
+        private fun clickListener(descriptionIsVisible: Boolean) {
+            if (descriptionIsVisible) {
+                binding.description.visibility = View.GONE
+            } else {
+                binding.description.visibility = View.VISIBLE
             }
         }
     }

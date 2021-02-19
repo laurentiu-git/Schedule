@@ -15,6 +15,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:id="@+id/itemId"
             android:layout_height="wrap_content">
 
             <TextView
@@ -36,6 +37,7 @@
 
             <ImageView
                 android:layout_width="wrap_content"
+                android:id="@+id/showDescription"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_drop_down_circle"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -45,18 +47,22 @@
             <TextView
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintTop_toBottomOf="@id/location"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:maxLines="5"
                 android:text="@string/description"
                 android:textAlignment="textStart"
-                android:textSize="18sp"
+                android:textSize="16sp"
+                android:layout_marginEnd="75dp"
+                app:layout_constrainedWidth="true"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/timeline_line" />
+                app:layout_constraintStart_toEndOf="@+id/icLocation" />
 
             <ImageView
                 android:layout_width="wrap_content"
+                android:id="@+id/icLocation"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_location"
                 app:layout_constraintEnd_toStartOf="@id/location"
@@ -73,8 +79,7 @@
                 android:text="@string/location"
                 android:textAlignment="textStart"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="9dp"
+                app:layout_constraintBottom_toBottomOf="@id/icLocation"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@id/location" />
