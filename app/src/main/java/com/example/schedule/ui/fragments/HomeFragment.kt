@@ -1,5 +1,6 @@
 package com.example.schedule.ui.fragments
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -24,6 +25,7 @@ import com.example.schedule.ui.transitions.AddEventTransition
 import com.example.schedule.util.Constants.Companion.AUTOCOMPLETE_REQUEST_CODE
 import com.example.schedule.util.EntryEventListener
 import com.example.schedule.util.LocationListener
+import com.example.schedule.util.OnSwipeTouchListener
 import com.example.schedule.viewmodels.HomeScheduleViewModel
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
@@ -51,6 +53,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     @Inject
     lateinit var cal: Calendar
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHomeBinding.bind(view)
@@ -155,20 +158,20 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
             }
         )
 
-      /*  binding.homeFrag.setOnTouchListener(
+        binding.homeFrag.setOnTouchListener(
             object : OnSwipeTouchListener(view.context) {
                 override fun onSwipeLeft() {
                     val nextDay = 1
-                    binding.dayId.text = getCurrentDate(homeScheduleViewModel.getDate(nextDay))
+                    homeScheduleViewModel.getDate(nextDay)
                 }
 
                 override fun onSwipeRight() {
                     val previousDay = -1
-                    binding.dayId.text = getCurrentDate(homeScheduleViewModel.getDate(previousDay))
+                    homeScheduleViewModel.getDate(previousDay)
                 }
             }
         )
-       */
+
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT,
