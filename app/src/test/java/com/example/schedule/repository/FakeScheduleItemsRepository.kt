@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.util.ScheduleRepository
+import java.text.SimpleDateFormat
 import java.util.* // ktlint-disable
 
 class FakeScheduleItemsRepository : ScheduleRepository {
@@ -31,6 +32,7 @@ class FakeScheduleItemsRepository : ScheduleRepository {
     }
 
     override fun getDate(amount: Int): Date {
-        return Calendar.getInstance().time
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        return dateFormat.parse(dateFormat.format(Calendar.getInstance().time))
     }
 }
