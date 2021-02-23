@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.util.ScheduleRepository
-import java.util.*
+import java.util.* // ktlint-disable
 
-class FakeScheduleItemsRepository: ScheduleRepository {
+class FakeScheduleItemsRepository : ScheduleRepository {
 
     private val scheduleItems = mutableListOf<ScheduleInfo>()
 
-    private  val observableScheduleItems = MutableLiveData<List<ScheduleInfo>>(scheduleItems)
+    private val observableScheduleItems = MutableLiveData<List<ScheduleInfo>>(scheduleItems)
 
     private fun refreshLiveData() {
         observableScheduleItems.postValue(scheduleItems)
@@ -27,7 +27,7 @@ class FakeScheduleItemsRepository: ScheduleRepository {
     }
 
     override fun getSchedules(date: Date): LiveData<List<ScheduleInfo>> {
-         return observableScheduleItems
+        return observableScheduleItems
     }
 
     override fun getDate(amount: Int): Date {

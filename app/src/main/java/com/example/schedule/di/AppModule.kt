@@ -1,7 +1,6 @@
 package com.example.schedule.di
 
 import android.content.Context
-import com.example.schedule.data.local.ScheduleDao
 import com.example.schedule.data.local.ScheduleDatabase
 import com.example.schedule.repository.ScheduleItemsRepository
 import com.example.schedule.util.ScheduleRepository
@@ -10,7 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import java.util.* //ktlint-disable
+import java.util.* // ktlint-disable
 import javax.inject.Singleton
 
 @Module

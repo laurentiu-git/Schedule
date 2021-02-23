@@ -11,9 +11,9 @@ import javax.inject.Inject
 class ScheduleItemsRepository @Inject constructor(
     val db: ScheduleDatabase,
     val cal: Calendar
-): ScheduleRepository {
-    override suspend fun updateAndReplace(schedule: ScheduleInfo)  {
-         db.getScheduleDao().updateAndReplace(schedule)
+) : ScheduleRepository {
+    override suspend fun updateAndReplace(schedule: ScheduleInfo) {
+        db.getScheduleDao().updateAndReplace(schedule)
     }
 
     override suspend fun deleteSchedule(schedule: ScheduleInfo) {

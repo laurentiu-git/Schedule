@@ -15,6 +15,6 @@ class HomeScheduleViewModelTest {
 
     @Test
     fun `inserting item`() {
-        viewModel.updateAndReplace(ScheduleInfo(null,viewModel.getDate(0),"","","","",""))
+        viewModel.updateAndReplace(ScheduleInfo(null, viewModel.getDate(0), "", "", "", "", ""))
     }
 }
