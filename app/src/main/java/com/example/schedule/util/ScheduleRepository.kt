@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import com.example.schedule.data.models.ScheduleInfo
 import java.util.* //ktlint-disable
 
-interface ScheduleItemsRepository {
-    suspend fun updateAndReplace(schedule: ScheduleInfo): Long
+interface ScheduleRepository {
+    suspend fun updateAndReplace(schedule: ScheduleInfo)
 
     suspend fun deleteSchedule(schedule: ScheduleInfo)
 

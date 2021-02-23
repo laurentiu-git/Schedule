@@ -8,7 +8,7 @@ import java.util.* //ktlint-disable
 @Dao
 interface ScheduleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateAndReplace(result: ScheduleInfo): Long
+    suspend fun updateAndReplace(result: ScheduleInfo)
 
     @Query("SELECT * FROM schedules WHERE date-:date  = 0")
     fun getSchedule(date: Date): LiveData<List<ScheduleInfo>>

@@ -3,7 +3,7 @@ package com.example.schedule.repository
 import androidx.lifecycle.LiveData
 import com.example.schedule.data.local.ScheduleDatabase
 import com.example.schedule.data.models.ScheduleInfo
-import com.example.schedule.util.ScheduleItemsRepository
+import com.example.schedule.util.ScheduleRepository
 import java.text.SimpleDateFormat //ktlint-disable
 import java.util.* //ktlint-disable
 import javax.inject.Inject
@@ -11,9 +11,9 @@ import javax.inject.Inject
 class ScheduleItemsRepository @Inject constructor(
     val db: ScheduleDatabase,
     val cal: Calendar
-) : ScheduleItemsRepository {
-    override suspend fun updateAndReplace(schedule: ScheduleInfo): Long {
-        return db.getScheduleDao().updateAndReplace(schedule)
+): ScheduleRepository {
+    override suspend fun updateAndReplace(schedule: ScheduleInfo)  {
+         db.getScheduleDao().updateAndReplace(schedule)
     }
 
     override suspend fun deleteSchedule(schedule: ScheduleInfo) {

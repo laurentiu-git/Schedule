@@ -2,7 +2,7 @@ package com.example.schedule.viewmodels
 
 import androidx.lifecycle.* //ktlint-disable
 import com.example.schedule.data.models.ScheduleInfo
-import com.example.schedule.repository.ScheduleItemsRepository
+import com.example.schedule.util.ScheduleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.* //ktlint-disable
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeScheduleViewModel @Inject constructor(
-    private val scheduleItemsItemsRepository: ScheduleItemsRepository
+    private val scheduleItemsItemsRepository: ScheduleRepository
 ) : ViewModel() {
 
     val date: MutableLiveData<Date> = MutableLiveData()
