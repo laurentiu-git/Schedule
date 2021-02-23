@@ -5,7 +5,6 @@ import com.example.schedule.MainCoroutineRule
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.repository.FakeScheduleItemsRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
