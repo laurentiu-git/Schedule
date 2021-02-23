@@ -1,13 +1,15 @@
 package com.example.schedule.viewmodels
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.* //ktlint-disable
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.repository.ScheduleItemsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.* //ktlint-disable
+import javax.inject.Inject
 
-class HomeScheduleViewModel @ViewModelInject constructor(
+@HiltViewModel
+class HomeScheduleViewModel @Inject constructor(
     private val scheduleItemsItemsRepository: ScheduleItemsRepository
 ) : ViewModel() {
 

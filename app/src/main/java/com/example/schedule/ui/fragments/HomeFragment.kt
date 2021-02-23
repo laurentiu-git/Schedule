@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.DatePicker
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -95,6 +96,18 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                     homeScheduleViewModel.updateAndReplace(scheduleInfo)
                 }
 
+                val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                    if (result.resultCode == Activity.RESULT_OK) {
+                        // There are no request codes
+                        val data: Intent? = result.data
+                        val place = data?.let { Autocomplete.getPlaceFromIntent(it) }
+                        place?.name?.let {
+                            location = it
+                        }
+                        locationListener?.setLocation(location)
+                    }
+                }
+
                 override fun searchLocation() {
                     val fields = listOf(Place.Field.ID, Place.Field.NAME)
                     // Start the autocomplete intent.
@@ -105,7 +118,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                         Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                             .build(it)
                     }
-                    startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
+                        resultLauncher.launch(intent)
                 }
             }
         )
@@ -211,35 +224,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         cal.set(year, month, dayOfMonth)
         homeScheduleViewModel.getDate(0)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            when (resultCode) {
-                Activity.RESULT_OK -> {
-                    data?.let {
-                        val place = Autocomplete.getPlaceFromIntent(data)
-                        Log.i("TAG", "Place: ${place.name}, ${place.id}")
-                        place.name?.let {
-                            location = it
-                        } ?: ""
-                        locationListener?.setLocation(location)
-                    }
-                }
-                AutocompleteActivity.RESULT_ERROR -> {
-                    // TODO: Handle the error.
-                    data?.let {
-                        val status = Autocomplete.getStatusFromIntent(data)
-                        status.statusMessage?.let { it1 -> Log.i("TAG", it1) }
-                    }
-                }
-                Activity.RESULT_CANCELED -> {
-                    // The user canceled the operation.
-                }
-            }
-            return
-        }
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroyView() {
