@@ -5,11 +5,10 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.DatePicker
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -23,7 +22,6 @@ import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.databinding.FragmentHomeBinding
 import com.example.schedule.ui.adapters.ScheduleAdapter
 import com.example.schedule.ui.transitions.AddEventTransition
-import com.example.schedule.util.Constants.Companion.AUTOCOMPLETE_REQUEST_CODE
 import com.example.schedule.util.EntryEventListener
 import com.example.schedule.util.LocationListener
 import com.example.schedule.util.OnSwipeTouchListener
@@ -31,7 +29,6 @@ import com.example.schedule.viewmodels.HomeScheduleViewModel
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -96,7 +93,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                     homeScheduleViewModel.updateAndReplace(scheduleInfo)
                 }
 
-                val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                val resultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
                     if (result.resultCode == Activity.RESULT_OK) {
                         // There are no request codes
                         val data: Intent? = result.data
@@ -118,7 +115,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                         Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                             .build(it)
                     }
-                        resultLauncher.launch(intent)
+                    resultLauncher.launch(intent)
                 }
             }
         )
