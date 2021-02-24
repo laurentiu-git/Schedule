@@ -10,7 +10,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.* // ktlint-disable
 
 @ExperimentalCoroutinesApi
 class HomeScheduleViewModelTest {

@@ -16,7 +16,7 @@ object TestAppModule {
 
     @Provides
     @Named("test_db")
-    fun provideInMemoryDb(@ApplicationContext context: Context ) =
+    fun provideInMemoryDb(@ApplicationContext context: Context) =
         Room.inMemoryDatabaseBuilder(context, ScheduleDatabase::class.java)
             .allowMainThreadQueries()
             .build()

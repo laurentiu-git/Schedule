@@ -7,7 +7,7 @@ import dagger.hilt.android.testing.HiltTestApplication
 
 class HiltTestRunner : AndroidJUnitRunner() {
 
-    override  fun newApplication(
+    override fun newApplication(
         cl: ClassLoader?,
         className: String?,
         context: Context?

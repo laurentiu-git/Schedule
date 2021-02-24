@@ -13,7 +13,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.util.*
+import java.util.* // ktlint-disable
 import javax.inject.Inject
 import javax.inject.Named
 
