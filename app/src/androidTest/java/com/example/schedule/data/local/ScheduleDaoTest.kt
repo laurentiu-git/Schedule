@@ -47,11 +47,23 @@ class ScheduleDaoTest {
     @Test
     fun insertScheduleItem() = runBlockingTest {
         val date = Calendar.getInstance().time
-        val scheudle = ScheduleInfo(1, date, "", "", "", "", "")
-        dao.updateAndReplace(scheudle)
+        val schedule = ScheduleInfo(1, date, "", "", "", "", "")
+        dao.updateAndReplace(schedule)
 
         val allScheduleItems = dao.getSchedule(date).getOrAwaitValue()
 
-        assertThat(allScheduleItems).contains(scheudle)
+        assertThat(allScheduleItems).contains(schedule)
+    }
+
+    @Test
+    fun deleteScheduleItem() = runBlockingTest {
+        val date = Calendar.getInstance().time
+        val schedule = ScheduleInfo(1, date, "", "", "", "", "")
+
+        dao.updateAndReplace(schedule)
+        dao.deleteResult(schedule)
+        val allScheduleItems = dao.getSchedule(date).getOrAwaitValue()
+
+        assertThat(allScheduleItems).isEmpty()
     }
 }
