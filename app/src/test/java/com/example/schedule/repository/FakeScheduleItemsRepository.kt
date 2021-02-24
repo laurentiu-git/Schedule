@@ -32,6 +32,7 @@ class FakeScheduleItemsRepository : ScheduleRepository {
     }
 
     override fun getDate(amount: Int): Date {
+        Calendar.getInstance().add(Calendar.DATE, amount)
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         return dateFormat.parse(dateFormat.format(Calendar.getInstance().time))
     }
