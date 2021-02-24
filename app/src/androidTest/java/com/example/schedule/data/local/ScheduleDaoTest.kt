@@ -4,8 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.filters.SmallTest
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.getOrAwaitValue
+import com.example.schedule.ui.fragments.EditFragment
+import com.example.schedule.ui.fragments.HomeFragment
 import com.example.schedule.util.TestConstants
 import com.google.common.truth.Truth.assertThat
+import com.launchFragmentInHiltContainer
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -77,5 +80,12 @@ class ScheduleDaoTest {
         val allScheduleInfo = dao.getSchedule(TestConstants.date).getOrAwaitValue()
 
         assertThat(allScheduleInfo.size).isEqualTo(TestConstants.scheduleList.size)
+    }
+
+    @Test
+    fun launchFragmentInHiltContainer() {
+        launchFragmentInHiltContainer<EditFragment>{
+
+        }
     }
 }
