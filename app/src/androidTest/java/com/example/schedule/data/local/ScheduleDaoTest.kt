@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.filters.SmallTest
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.getOrAwaitValue
+import com.example.schedule.util.TestConstants
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -65,5 +66,16 @@ class ScheduleDaoTest {
         val allScheduleItems = dao.getSchedule(date).getOrAwaitValue()
 
         assertThat(allScheduleItems).isEmpty()
+    }
+
+    @Test
+    fun checkObservableItems_expectedSameElementsSize()= runBlockingTest {
+        for(schedule in TestConstants.scheduleList) {
+           dao.updateAndReplace(schedule)
+       }
+
+        val allScheduleInfo = dao.getSchedule(TestConstants.date).getOrAwaitValue()
+
+        assertThat(allScheduleInfo.size).isEqualTo(TestConstants.scheduleList.size)
     }
 }
