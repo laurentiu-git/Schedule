@@ -1,4 +1,4 @@
-package com.example.schedule.di
+package com.example.schedule
 
 import android.app.Application
 import android.content.Context

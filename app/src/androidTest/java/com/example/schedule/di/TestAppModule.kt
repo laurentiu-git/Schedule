@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.components.SingletonComponent // ktlint-disable
 import javax.inject.Named
 
 @Module
@@ -15,8 +15,8 @@ import javax.inject.Named
 object TestAppModule {
 
     @Provides
-    @Named("test_db")
-    fun provideInMemoryDb(@ApplicationContext context: Context) =
+    @Named("myDB")
+    fun provideInMemoryDb(@ApplicationContext context: Context): ScheduleDatabase =
         Room.inMemoryDatabaseBuilder(context, ScheduleDatabase::class.java)
             .allowMainThreadQueries()
             .build()

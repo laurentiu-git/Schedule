@@ -1,18 +1,17 @@
 package com
 
-
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.StyleRes
 import androidx.core.util.Preconditions
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.testing.FragmentScenario.EmptyFragmentActivity
-import androidx.lifecycle.Lifecycle
+import androidx.fragment.app.FragmentFactory
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import com.example.schedule.HiltTestActivity
 import com.example.schedule.R
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /**
  * launchFragmentInContainer from the androidx.fragment:fragment-testing library
@@ -23,31 +22,34 @@ import com.example.schedule.R
  * [HiltTestActivity] in the debug folder and include it in the debug AndroidManifest.xml file
  * as can be found in this project.
  */
+@ExperimentalCoroutinesApi
 inline fun <reified T : Fragment> launchFragmentInHiltContainer(
     fragmentArgs: Bundle? = null,
     @StyleRes themeResId: Int = R.style.FragmentScenarioEmptyFragmentActivityTheme,
-    initialState: Lifecycle.State = Lifecycle.State.RESUMED,
-    crossinline action: Fragment.() -> Unit = {}
+    fragmentFactory: FragmentFactory? = null,
+    crossinline action: T.() -> Unit = {}
 ) {
-    val startActivityIntent = Intent.makeMainActivity(
+    val mainActivityIntent = Intent.makeMainActivity(
         ComponentName(
             ApplicationProvider.getApplicationContext(),
             HiltTestActivity::class.java
         )
-    ).putExtra(EmptyFragmentActivity.THEME_EXTRAS_BUNDLE_KEY, themeResId)
+    ).putExtra("id", themeResId)
 
-    ActivityScenario.launch<HiltTestActivity>(startActivityIntent).onActivity { activity ->
-        val fragment: Fragment = activity.supportFragmentManager.fragmentFactory.instantiate(
+    ActivityScenario.launch<HiltTestActivity>(mainActivityIntent).onActivity { activity ->
+        fragmentFactory?.let {
+            activity.supportFragmentManager.fragmentFactory = it
+        }
+        val fragment = activity.supportFragmentManager.fragmentFactory.instantiate(
             Preconditions.checkNotNull(T::class.java.classLoader),
             T::class.java.name
         )
         fragment.arguments = fragmentArgs
-        activity.supportFragmentManager
-            .beginTransaction()
+
+        activity.supportFragmentManager.beginTransaction()
             .add(android.R.id.content, fragment, "")
-            .setMaxLifecycle(fragment, initialState)
             .commitNow()
 
-        fragment.action()
+        (fragment as T).action()
     }
 }

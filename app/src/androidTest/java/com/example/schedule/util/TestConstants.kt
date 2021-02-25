@@ -1,7 +1,7 @@
 package com.example.schedule.util
 
 import com.example.schedule.data.models.ScheduleInfo
-import java.util.*
+import java.util.* // ktlint-disable
 
 class TestConstants {
     companion object {

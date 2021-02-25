@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.util.AttributeSet
-import android.util.Log
-import android.view.ContextMenu
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
@@ -24,13 +22,14 @@ import com.example.schedule.util.Constants
 import com.example.schedule.util.EntryEventListener
 import com.example.schedule.util.LocationListener
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.Exception
 import java.util.* //ktlint-disable
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class EntryEvent @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private var entryEvent: EntryEventListener? = null
@@ -43,93 +42,92 @@ class EntryEvent @JvmOverloads constructor(
 
     private var fragmentBinding: AddEventFragmentBinding? = null
 
-       init {
-               val view = View.inflate(context, R.layout.add_event_fragment, this)
-               val binding = AddEventFragmentBinding.bind(view)
-               fragmentBinding = binding
+    init {
+        val view = View.inflate(context, R.layout.add_event_fragment, this)
+        val binding = AddEventFragmentBinding.bind(view)
+        fragmentBinding = binding
 
+        setOnClickListener {
+            entryEvent?.onCloseClicked()
+            hideKeyboardFrom(context, it)
+        }
 
-           setOnClickListener {
-               entryEvent?.onCloseClicked()
-               hideKeyboardFrom(context, it)
-           }
+        binding.close.setOnClickListener {
+            entryEvent?.onCloseClicked()
+            hideKeyboardFrom(context, it)
+        }
 
-           binding.close.setOnClickListener {
-               entryEvent?.onCloseClicked()
-               hideKeyboardFrom(context, it)
-           }
+        binding.addLayout.setOnClickListener {
+            hideKeyboardFrom(context, it)
+        }
 
-           binding.addLayout.setOnClickListener {
-               hideKeyboardFrom(context, it)
-           }
+        timeAdapter.differ.submitList(Constants.hourList)
+        binding.hourList.apply {
+            adapter = timeAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+        binding.hourList.scrollToPosition(Integer.MAX_VALUE / 2)
+        snapHelper.attachToRecyclerView(binding.hourList)
 
-           timeAdapter.differ.submitList(Constants.hourList)
-           binding.hourList.apply {
-               adapter = timeAdapter
-               layoutManager = LinearLayoutManager(context)
-           }
-           binding.hourList.scrollToPosition(Integer.MAX_VALUE / 2)
-           snapHelper.attachToRecyclerView(binding.hourList)
+        minutesAdapter.differ.submitList(Constants.minutesList)
+        binding.minutesList.apply {
+            adapter = minutesAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+        binding.minutesList.scrollToPosition(Integer.MAX_VALUE / 2)
+        LinearSnapHelper().attachToRecyclerView(binding.minutesList)
 
-           minutesAdapter.differ.submitList(Constants.minutesList)
-           binding.minutesList.apply {
-               adapter = minutesAdapter
-               layoutManager = LinearLayoutManager(context)
-           }
-           binding.minutesList.scrollToPosition(Integer.MAX_VALUE / 2)
-           LinearSnapHelper().attachToRecyclerView(binding.minutesList)
+        binding.hourTimeForEnd.apply {
+            adapter = timeAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+        binding.hourTimeForEnd.scrollToPosition(Integer.MAX_VALUE / 2)
+        LinearSnapHelper().attachToRecyclerView(binding.hourTimeForEnd)
 
-           binding.hourTimeForEnd.apply {
-               adapter = timeAdapter
-               layoutManager = LinearLayoutManager(context)
-           }
-           binding.hourTimeForEnd.scrollToPosition(Integer.MAX_VALUE / 2)
-           LinearSnapHelper().attachToRecyclerView(binding.hourTimeForEnd)
+        binding.minutesTimeForEnd.apply {
+            adapter = minutesAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+        binding.minutesTimeForEnd.scrollToPosition(Integer.MAX_VALUE / 2)
+        LinearSnapHelper().attachToRecyclerView(binding.minutesTimeForEnd)
 
-           binding.minutesTimeForEnd.apply {
-               adapter = minutesAdapter
-               layoutManager = LinearLayoutManager(context)
-           }
-           binding.minutesTimeForEnd.scrollToPosition(Integer.MAX_VALUE / 2)
-           LinearSnapHelper().attachToRecyclerView(binding.minutesTimeForEnd)
+        binding.addBtn.setOnClickListener {
+            val hour = timeAdapter.getTime(snapHelper.getSnapPosition(binding.hourList))
+            val hourEnd = timeAdapter.getTime(snapHelper.getSnapPosition(binding.hourTimeForEnd))
+            val minutes = minutesAdapter.getTimeMinutes(snapHelper.getSnapPosition(binding.minutesList))
+            val minutesEnd = minutesAdapter.getTimeMinutes(snapHelper.getSnapPosition(binding.minutesTimeForEnd))
+            val schedule = ScheduleInfo(
+                null,
+                Calendar.getInstance().time,
+                "$hour:$minutes",
+                "$hourEnd:$minutesEnd",
+                binding.titleText.text.toString(),
+                binding.description.text.toString(),
+                ""
+            )
+            entryEvent?.addSchedule(schedule)
+            hideKeyboardFrom(context, it)
+            entryEvent?.onCloseClicked()
+        }
 
-           binding.addBtn.setOnClickListener {
-               val hour = timeAdapter.getTime(snapHelper.getSnapPosition(binding.hourList))
-               val hourEnd = timeAdapter.getTime(snapHelper.getSnapPosition(binding.hourTimeForEnd))
-               val minutes = minutesAdapter.getTimeMinutes(snapHelper.getSnapPosition(binding.minutesList))
-               val minutesEnd = minutesAdapter.getTimeMinutes(snapHelper.getSnapPosition(binding.minutesTimeForEnd))
-               val schedule = ScheduleInfo(
-                       null,
-                       Calendar.getInstance().time,
-                       "$hour:$minutes",
-                       "$hourEnd:$minutesEnd",
-                       binding.titleText.text.toString(),
-                       binding.description.text.toString(),
-                       ""
-               )
-               entryEvent?.addSchedule(schedule)
-               hideKeyboardFrom(context, it)
-               entryEvent?.onCloseClicked()
-           }
+        binding.location.setOnClickListener {
+            entryEvent?.searchLocation()
+        }
 
-           binding.location.setOnClickListener {
-               entryEvent?.searchLocation()
-           }
+        val fragment = getForegroundFragment()
 
-           val fragment = getForegroundFragment()
+        val homeFragment = fragment?.let {
+            it as HomeFragment
+        }
 
-           val homeFragment = fragment?.let {
-               it as HomeFragment
-           }
-
-           homeFragment?.setLocation(
-                   object : LocationListener {
-                       override fun setLocation(location: String) {
-                           binding.location.text = location
-                       }
-                   }
-           )
-       }
+        homeFragment?.setLocation(
+            object : LocationListener {
+                override fun setLocation(location: String) {
+                    binding.location.text = location
+                }
+            }
+        )
+    }
 
     fun setAddEventListener(entryEventListener: EntryEventListener) {
         this.entryEvent = entryEventListener

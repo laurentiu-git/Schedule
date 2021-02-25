@@ -1,6 +1,7 @@
 package com.example.schedule.di
 
 import android.content.Context
+import androidx.room.Room
 import com.example.schedule.data.local.ScheduleDatabase
 import com.example.schedule.repository.ScheduleItemsRepository
 import com.example.schedule.util.ScheduleRepository
@@ -20,7 +21,7 @@ object AppModule {
     @Singleton
     fun proivdeShopDatabaseInstance(
         @ApplicationContext context: Context
-    ) = ScheduleDatabase(context)
+    ) = Room.databaseBuilder(context, ScheduleDatabase::class.java, "DB").build()
 
     @Provides
     @Singleton
