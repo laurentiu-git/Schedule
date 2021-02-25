@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.util.AttributeSet
+import android.util.Log
+import android.view.ContextMenu
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
@@ -22,6 +24,7 @@ import com.example.schedule.util.Constants
 import com.example.schedule.util.EntryEventListener
 import com.example.schedule.util.LocationListener
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.Exception
 import java.util.* //ktlint-disable
 import javax.inject.Inject
 
@@ -126,7 +129,6 @@ class EntryEvent @JvmOverloads constructor(
                        }
                    }
            )
-
        }
 
     fun setAddEventListener(entryEventListener: EntryEventListener) {
