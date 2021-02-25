@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.core.view.isVisible
@@ -172,7 +173,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
             object : OnSwipeTouchListener(view.context) {
                 override fun onSwipeLeft() {
                     val nextDay = 1
-                    homeScheduleViewModel.getDate(nextDay)
+                   var day = homeScheduleViewModel.getDate(nextDay)
+                    Toast.makeText(context,"Swipe $day", Toast.LENGTH_LONG).show()
                 }
 
                 override fun onSwipeRight() {

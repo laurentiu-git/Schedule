@@ -1,10 +1,12 @@
 package com.example.schedule.data.local
 
+import android.os.Bundle
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.filters.SmallTest
+import com.example.schedule.R
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.getOrAwaitValue
-import com.example.schedule.ui.fragments.EditFragment
 import com.example.schedule.ui.fragments.HomeFragment
 import com.example.schedule.util.TestConstants
 import com.google.common.truth.Truth.assertThat
@@ -84,8 +86,7 @@ class ScheduleDaoTest {
 
     @Test
     fun launchFragmentInHiltContainer() {
-        launchFragmentInHiltContainer<EditFragment>{
-
-        }
+        launchFragmentInHiltContainer<HomeFragment>()
+        // launchFragmentInContainer<HomeFragment>()
     }
 }

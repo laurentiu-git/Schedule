@@ -25,6 +25,7 @@ class ScheduleItemsRepository @Inject constructor(
     }
 
     override fun getDate(amount: Int): Date {
+        cal.add(Calendar.DATE, amount)
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         return dateFormat.parse(dateFormat.format(cal.time))
     }
