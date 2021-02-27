@@ -44,21 +44,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/firstTask"
+        <CheckBox
             android:layout_width="wrap_content"
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="75dp"
-            android:maxLines="5"
-            android:text="@string/description"
-            android:textAlignment="textStart"
-            android:textSize="16sp"
-            android:visibility="gone"
+            android:text="@string/firstTask"
+            android:id="@+id/firstTask"
+            android:checked="true"
+            android:visibility="visible"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/icLocation"
+            app:layout_constraintStart_toStartOf="@+id/icLocation"
             app:layout_constraintTop_toBottomOf="@id/location" />
+
 
         <ImageView
             android:id="@+id/icLocation"
