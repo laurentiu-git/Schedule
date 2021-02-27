@@ -19,15 +19,15 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
             binding.location.text = schedule.location
             binding.startTime.text = schedule.startTime
             binding.endTime.text = schedule.endTime
-            binding.description.text = schedule.description
+            binding.firstTask.text = schedule.firstTask
             binding.taskName.text = schedule.taskName
 
             binding.showDescription.setOnClickListener {
-                clickListener(binding.description.isVisible)
+                clickListener(binding.firstTask.isVisible)
             }
 
             binding.itemId.setOnClickListener {
-                clickListener(binding.description.isVisible)
+                clickListener(binding.firstTask.isVisible)
             }
         }
 
@@ -41,9 +41,9 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
         }
         private fun clickListener(descriptionIsVisible: Boolean) {
             if (descriptionIsVisible) {
-                binding.description.visibility = View.GONE
+                binding.firstTask.visibility = View.GONE
             } else {
-                binding.description.visibility = View.VISIBLE
+                binding.firstTask.visibility = View.VISIBLE
             }
         }
     }

@@ -102,7 +102,7 @@ class EntryEvent @JvmOverloads constructor(
                 "$hour:$minutes",
                 "$hourEnd:$minutesEnd",
                 binding.titleText.text.toString(),
-                binding.description.text.toString(),
+                binding.firstTask.text.toString(),
                 ""
             )
             entryEvent?.addSchedule(schedule)

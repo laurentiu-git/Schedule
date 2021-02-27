@@ -87,7 +87,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                         schedule.startTime,
                         schedule.endTime,
                         schedule.taskName,
-                        schedule.description,
+                        schedule.firstTask,
                         location
                     )
                     homeScheduleViewModel.updateAndReplace(scheduleInfo)
@@ -168,7 +168,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
             }
         )
 
-        binding.homeFrag.setOnTouchListener(
+         binding.homeFrag.setOnTouchListener(
             object : OnSwipeTouchListener(view.context) {
                 override fun onSwipeLeft() {
                     val nextDay = 1
@@ -182,7 +182,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
             }
         )
 
-        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+    val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT,
         ) {
@@ -229,6 +229,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         this.locationListener = null
         fragmentBinding = null
     }
+
     fun setLocation(locationListener: LocationListener) {
         this.locationListener = locationListener
     }

@@ -9,4 +9,5 @@
     <string name="new_task">New Task</string>
     <string name="today">Today</string>
     <string name="location">Location</string>
+    <string name="firstTask">Primul Task</string>
 </resources>
