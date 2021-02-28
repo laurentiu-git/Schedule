@@ -42,8 +42,10 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
         private fun clickListener(descriptionIsVisible: Boolean) {
             if (descriptionIsVisible) {
                 binding.firstTask.visibility = View.GONE
+                binding.addTask.visibility = View.GONE
             } else {
                 binding.firstTask.visibility = View.VISIBLE
+                binding.addTask.visibility = View.VISIBLE
             }
         }
     }
