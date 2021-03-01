@@ -19,15 +19,15 @@ class TestMethods {
     companion object {
         fun clickXY(x: Int, y: Int): ViewAction? {
             return GeneralClickAction(
-                    Tap.SINGLE,
-                    { view ->
-                        val screenPos = IntArray(2)
-                        view.getLocationOnScreen(screenPos)
-                        val screenX = (screenPos[0] + x).toFloat()
-                        val screenY = (screenPos[1] + y).toFloat()
-                        floatArrayOf(screenX, screenY)
-                    },
-                    Press.FINGER
+                Tap.SINGLE,
+                { view ->
+                    val screenPos = IntArray(2)
+                    view.getLocationOnScreen(screenPos)
+                    val screenX = (screenPos[0] + x).toFloat()
+                    val screenY = (screenPos[1] + y).toFloat()
+                    floatArrayOf(screenX, screenY)
+                },
+                Press.FINGER
             )
         }
 
@@ -38,20 +38,22 @@ class TestMethods {
 
         fun getText(matcher: ViewInteraction): String {
             var text = String()
-            matcher.perform(object : ViewAction {
-                override fun getConstraints(): Matcher<View> {
-                    return isAssignableFrom(TextView::class.java)
-                }
+            matcher.perform(
+                object : ViewAction {
+                    override fun getConstraints(): Matcher<View> {
+                        return isAssignableFrom(TextView::class.java)
+                    }
 
-                override fun getDescription(): String {
-                    return "Text of the view"
-                }
+                    override fun getDescription(): String {
+                        return "Text of the view"
+                    }
 
-                override fun perform(uiController: UiController, view: View) {
-                    val tv = view as TextView
-                    text = tv.text.toString()
+                    override fun perform(uiController: UiController, view: View) {
+                        val tv = view as TextView
+                        text = tv.text.toString()
+                    }
                 }
-            })
+            )
 
             return text
         }

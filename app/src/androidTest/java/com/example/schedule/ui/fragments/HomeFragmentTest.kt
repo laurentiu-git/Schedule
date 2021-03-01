@@ -1,6 +1,5 @@
 package com.example.schedule.ui.fragments
 
-import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.* // ktlint-disable
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -10,7 +9,6 @@ import com.example.schedule.R
 import com.example.schedule.util.TestConstants
 import com.example.schedule.util.TestMethods
 import com.example.schedule.util.TestMethods.Companion.clickXY
-import com.example.schedule.util.TestMethods.Companion.withItemContent
 import com.launchFragmentInHiltContainer
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -19,10 +17,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import com.google.common.truth.Truth.assertThat
-import com.google.common.truth.Truth.assertWithMessage
-import org.hamcrest.Matchers.*
-
 
 @ExperimentalCoroutinesApi
 @MediumTest
