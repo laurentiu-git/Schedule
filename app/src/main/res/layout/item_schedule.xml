@@ -66,7 +66,7 @@
             android:visibility="gone"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/icLocation"
-            app:layout_constraintTop_toBottomOf="@id/firstTask"/>
+            app:layout_constraintTop_toBottomOf="@id/firstTaskEvent"/>
 
         <ImageView
             android:layout_width="wrap_content"

@@ -8,5 +8,7 @@ class TestConstants {
         val date = Calendar.getInstance().time
         val schedule = ScheduleInfo(null, date, "", "", "", "", "")
         val scheduleList = listOf(schedule, schedule, schedule)
+        val taskTitle = "Task Title"
+        val firstTask = "First Task"
     }
 }
