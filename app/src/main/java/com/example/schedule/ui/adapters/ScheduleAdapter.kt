@@ -9,9 +9,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.databinding.ItemScheduleBinding
+import com.example.schedule.ui.adapters.ScheduleAdapter.ScheduleAdapterViewHolder.Companion.onItemClickListener
 import javax.inject.Inject
 
 class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapter.ScheduleAdapterViewHolder>() {
+
+    fun setOnItemClickListener(listener: (Int) -> Unit) {
+        onItemClickListener = listener
+    }
 
     class ScheduleAdapterViewHolder constructor(private val binding: ItemScheduleBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -29,9 +34,19 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
             binding.itemId.setOnClickListener {
                 clickListener(binding.firstTask.isVisible)
             }
+
+            binding.extraTaskName.setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    onItemClickListener?.let {
+                        it(adapterPosition)
+                    }
+                }
+            }
         }
 
         companion object {
+            var onItemClickListener: ((Int) -> Unit)? = null
+
             fun from(parent: ViewGroup): ScheduleAdapterViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ItemScheduleBinding.inflate(layoutInflater, parent, false)
@@ -39,14 +54,21 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
                 return ScheduleAdapterViewHolder(binding)
             }
         }
-        private fun clickListener(descriptionIsVisible: Boolean) {
+
+         private fun clickListener(descriptionIsVisible: Boolean) {
             if (descriptionIsVisible) {
                 binding.firstTask.visibility = View.GONE
                 binding.addTask.visibility = View.GONE
+                binding.extraTaskName.visibility = View.GONE
             } else {
                 binding.firstTask.visibility = View.VISIBLE
                 binding.addTask.visibility = View.VISIBLE
+                binding.extraTaskName.visibility = View.VISIBLE
             }
+
+             onItemClickListener?.let {
+                 it(-1)
+             }
         }
     }
 
@@ -75,4 +97,5 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
+
 }

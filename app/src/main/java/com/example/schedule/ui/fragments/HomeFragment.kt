@@ -3,10 +3,14 @@ package com.example.schedule.ui.fragments
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.core.view.isVisible
@@ -64,8 +68,15 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
             layoutManager = LinearLayoutManager(activity)
         }
 
+
         val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
+        scheduleAdapter.setOnItemClickListener{
+            bottomNav?.isVisible = false
+            if ( it == -1) {
+                context?.let { it1 -> hideKeyboardFrom(it1, view) }
+            }
+        }
         binding.addEvent.setOnClickListener {
             val animation = AddEventTransition(binding.addEvent, binding.entryEvent)
             animation.openCalendar()
@@ -73,51 +84,51 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         }
 
         binding.entryEvent.setAddEventListener(
-            object : EntryEventListener {
-                override fun onCloseClicked() {
-                    val animation = AddEventTransition(binding.addEvent, binding.entryEvent)
-                    animation.closeCalendar()
-                    bottomNav?.isVisible = true
-                }
+                object : EntryEventListener {
+                    override fun onCloseClicked() {
+                        val animation = AddEventTransition(binding.addEvent, binding.entryEvent)
+                        animation.closeCalendar()
+                        bottomNav?.isVisible = true
+                    }
 
-                override fun addSchedule(schedule: ScheduleInfo) {
-                    val scheduleInfo = ScheduleInfo(
-                        null,
-                        homeScheduleViewModel.getDate(0),
-                        schedule.startTime,
-                        schedule.endTime,
-                        schedule.taskName,
-                        schedule.firstTask,
-                        location
-                    )
-                    homeScheduleViewModel.updateAndReplace(scheduleInfo)
-                }
+                    override fun addSchedule(schedule: ScheduleInfo) {
+                        val scheduleInfo = ScheduleInfo(
+                                null,
+                                homeScheduleViewModel.getDate(0),
+                                schedule.startTime,
+                                schedule.endTime,
+                                schedule.taskName,
+                                schedule.firstTask,
+                                location
+                        )
+                        homeScheduleViewModel.updateAndReplace(scheduleInfo)
+                    }
 
-                val resultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
-                    if (result.resultCode == Activity.RESULT_OK) {
-                        // There are no request codes
-                        val data: Intent? = result.data
-                        val place = data?.let { Autocomplete.getPlaceFromIntent(it) }
-                        place?.name?.let {
-                            location = it
+                    val resultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+                        if (result.resultCode == Activity.RESULT_OK) {
+                            // There are no request codes
+                            val data: Intent? = result.data
+                            val place = data?.let { Autocomplete.getPlaceFromIntent(it) }
+                            place?.name?.let {
+                                location = it
+                            }
+                            locationListener?.setLocation(location)
                         }
-                        locationListener?.setLocation(location)
+                    }
+
+                    override fun searchLocation() {
+                        val fields = listOf(Place.Field.ID, Place.Field.NAME)
+                        // Start the autocomplete intent.
+                        val intent = context?.let {
+                            if (!Places.isInitialized()) {
+                                Places.initialize(it, BuildConfig.API_PLACES)
+                            }
+                            Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                                    .build(it)
+                        }
+                        resultLauncher.launch(intent)
                     }
                 }
-
-                override fun searchLocation() {
-                    val fields = listOf(Place.Field.ID, Place.Field.NAME)
-                    // Start the autocomplete intent.
-                    val intent = context?.let {
-                        if (!Places.isInitialized()) {
-                            Places.initialize(it, BuildConfig.API_PLACES)
-                        }
-                        Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
-                            .build(it)
-                    }
-                    resultLauncher.launch(intent)
-                }
-            }
         )
 
         val callback = object : OnBackPressedCallback(true) {
@@ -152,40 +163,39 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
 
         homeScheduleViewModel.getDate(0)
         homeScheduleViewModel.date.observe(
-            viewLifecycleOwner,
-            {
-                result ->
-                val dateFormat = SimpleDateFormat("EEE, MMM d", Locale.getDefault())
-                binding.dayId.text = dateFormat.format(result)
-            }
+                viewLifecycleOwner,
+                { result ->
+                    val dateFormat = SimpleDateFormat("EEE, MMM d", Locale.getDefault())
+                    binding.dayId.text = dateFormat.format(result)
+                }
         )
 
         homeScheduleViewModel.currentScheduleList()
         homeScheduleViewModel.scheduleList.observe(
-            viewLifecycleOwner,
-            { result ->
-                scheduleAdapter.differ.submitList(result)
-            }
+                viewLifecycleOwner,
+                { result ->
+                    scheduleAdapter.differ.submitList(result)
+                }
         )
 
          binding.homeFrag.setOnTouchListener(
-            object : OnSwipeTouchListener(view.context) {
-                override fun onSwipeLeft() {
-                    val nextDay = 1
-                    homeScheduleViewModel.getDate(nextDay)
-                }
+                 object : OnSwipeTouchListener(view.context) {
+                     override fun onSwipeLeft() {
+                         val nextDay = 1
+                         homeScheduleViewModel.getDate(nextDay)
+                     }
 
-                override fun onSwipeRight() {
-                    val previousDay = -1
-                    homeScheduleViewModel.getDate(previousDay)
-                }
-            }
-        )
+                     override fun onSwipeRight() {
+                         val previousDay = -1
+                         homeScheduleViewModel.getDate(previousDay)
+                     }
+                 }
+         )
 
     val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT,
-        ) {
+    ) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
                 return true
             }
@@ -210,11 +220,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
 
     private fun pickDate(view: View) {
         DatePickerDialog(
-            view.context,
-            this,
-            cal.get(Calendar.YEAR),
-            cal.get(Calendar.MONTH),
-            cal.get(Calendar.DAY_OF_MONTH)
+                view.context,
+                this,
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)
         ).show()
     }
 
@@ -232,5 +242,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
 
     fun setLocation(locationListener: LocationListener) {
         this.locationListener = locationListener
+    }
+
+    private fun hideKeyboardFrom(context: Context, view: View) {
+        val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (imm.isAcceptingText) {
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 }

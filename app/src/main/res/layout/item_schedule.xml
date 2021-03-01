@@ -58,6 +58,16 @@
             app:layout_constraintStart_toStartOf="@+id/icLocation"
             app:layout_constraintTop_toBottomOf="@id/location" />
 
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/add_task"
+            android:id="@+id/extraTaskName"
+            android:visibility="gone"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/icLocation"
+            app:layout_constraintTop_toBottomOf="@id/firstTask"/>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

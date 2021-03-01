@@ -10,4 +10,5 @@
     <string name="today">Today</string>
     <string name="location">Location</string>
     <string name="firstTask">Primul Task</string>
+    <string name="add_task">Add Task</string>
 </resources>
