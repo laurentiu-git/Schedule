@@ -55,7 +55,7 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
             }
         }
 
-         private fun clickListener(descriptionIsVisible: Boolean) {
+        private fun clickListener(descriptionIsVisible: Boolean) {
             if (descriptionIsVisible) {
                 binding.firstTask.visibility = View.GONE
                 binding.addTask.visibility = View.GONE
@@ -66,9 +66,9 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
                 binding.extraTaskName.visibility = View.VISIBLE
             }
 
-             onItemClickListener?.let {
-                 it(-1)
-             }
+            onItemClickListener?.let {
+                it(-1)
+            }
         }
     }
 
@@ -97,5 +97,4 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
-
 }

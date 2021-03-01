@@ -75,7 +75,7 @@
             android:src="@drawable/ic_add_task"
             app:layout_constraintEnd_toEndOf="parent"
             android:visibility="gone"
-            app:layout_constraintTop_toTopOf="@id/firstTask"
+            app:layout_constraintTop_toTopOf="@id/extraTaskName"
             android:padding="10dp"/>
 
 
