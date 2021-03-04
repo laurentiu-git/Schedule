@@ -44,29 +44,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <CheckBox
-            android:id="@+id/firstTask"
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:checked="true"
-            android:text="@string/firstTask"
-            android:visibility="gone"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/icLocation"
-            app:layout_constraintTop_toBottomOf="@id/location" />
-
+            android:id="@+id/listView"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/icLocation"
+            app:layout_constraintStart_toStartOf="@id/icLocation"
+            android:layout_height="wrap_content" />
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/add_task"
             android:id="@+id/extraTaskName"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/icLocation"
-            app:layout_constraintTop_toBottomOf="@id/firstTask"/>
+            app:layout_constraintTop_toBottomOf="@id/listView"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -74,7 +67,7 @@
             android:id="@+id/addTask"
             android:src="@drawable/ic_add_task"
             app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintTop_toTopOf="@id/extraTaskName"
             android:padding="10dp"/>
 

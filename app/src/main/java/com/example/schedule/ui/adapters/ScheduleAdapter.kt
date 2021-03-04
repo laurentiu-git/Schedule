@@ -6,10 +6,12 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.databinding.ItemScheduleBinding
 import com.example.schedule.ui.adapters.ScheduleAdapter.ScheduleAdapterViewHolder.Companion.onItemClickListener
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapter.ScheduleAdapterViewHolder>() {
@@ -20,19 +22,20 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
 
     class ScheduleAdapterViewHolder constructor(private val binding: ItemScheduleBinding) : RecyclerView.ViewHolder(binding.root) {
 
+        lateinit var taskListAdapter: TaskListAdapter
+
         fun bind(schedule: ScheduleInfo) {
             binding.location.text = schedule.location
             binding.startTime.text = schedule.startTime
             binding.endTime.text = schedule.endTime
-            binding.firstTask.text = schedule.firstTask
             binding.taskName.text = schedule.taskName
 
             binding.showDescription.setOnClickListener {
-                clickListener(binding.firstTask.isVisible)
+                clickListener(binding.addTask.isVisible)
             }
 
             binding.itemId.setOnClickListener {
-                clickListener(binding.firstTask.isVisible)
+                clickListener(binding.addTask.isVisible)
             }
 
             binding.extraTaskName.setOnFocusChangeListener { v, hasFocus ->
@@ -41,6 +44,13 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
                         it(adapterPosition)
                     }
                 }
+            }
+            val taskList = listOf("soomething",schedule.taskName)
+            taskListAdapter = TaskListAdapter()
+            taskListAdapter.differ.submitList(taskList)
+            binding.listView.apply {
+                adapter = taskListAdapter
+                layoutManager = LinearLayoutManager(binding.listView.context)
             }
         }
 
@@ -57,13 +67,13 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
 
         private fun clickListener(descriptionIsVisible: Boolean) {
             if (descriptionIsVisible) {
-                binding.firstTask.visibility = View.GONE
                 binding.addTask.visibility = View.GONE
                 binding.extraTaskName.visibility = View.GONE
+                binding.listView.visibility = View.GONE
             } else {
-                binding.firstTask.visibility = View.VISIBLE
                 binding.addTask.visibility = View.VISIBLE
                 binding.extraTaskName.visibility = View.VISIBLE
+                binding.listView.visibility = View.VISIBLE
             }
 
             onItemClickListener?.let {
