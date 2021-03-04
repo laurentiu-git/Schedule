@@ -14,6 +14,6 @@ data class ScheduleInfo(
     var startTime: String,
     var endTime: String,
     var taskName: String,
-    var firstTask: String,
     var location: String,
+    var taskList: List<String>,
 )

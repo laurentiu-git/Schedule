@@ -45,9 +45,8 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
                     }
                 }
             }
-            val taskList = listOf("soomething",schedule.taskName)
             taskListAdapter = TaskListAdapter()
-            taskListAdapter.differ.submitList(taskList)
+            taskListAdapter.differ.submitList(schedule.taskList)
             binding.listView.apply {
                 adapter = taskListAdapter
                 layoutManager = LinearLayoutManager(binding.listView.context)
