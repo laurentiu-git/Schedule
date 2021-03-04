@@ -103,7 +103,7 @@ class EntryEvent @JvmOverloads constructor(
                 "$hourEnd:$minutesEnd",
                 binding.titleText.text.toString(),
                 "",
-                    listOf(binding.firstTaskEvent.text.toString())
+                listOf(binding.firstTaskEvent.text.toString())
             )
             entryEvent?.addSchedule(schedule)
             hideKeyboardFrom(context, it)

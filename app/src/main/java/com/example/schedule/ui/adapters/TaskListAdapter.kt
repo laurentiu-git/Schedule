@@ -27,8 +27,8 @@ class TaskListAdapter() : RecyclerView.Adapter<TaskListAdapter.TaskListAdapterVi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskListAdapterViewHolder {
         return TaskListAdapterViewHolder(
-                LayoutInflater.from(parent.context)
-                        .inflate(R.layout.rows_for_list, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.rows_for_list, parent, false)
         )
     }
 

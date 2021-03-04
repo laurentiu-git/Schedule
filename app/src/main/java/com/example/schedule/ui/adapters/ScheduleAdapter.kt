@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.databinding.ItemScheduleBinding
 import com.example.schedule.ui.adapters.ScheduleAdapter.ScheduleAdapterViewHolder.Companion.onItemClickListener
-import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapter.ScheduleAdapterViewHolder>() {
