@@ -29,19 +29,19 @@ class HomeScheduleViewModelTest {
 
     @Test
     fun `inserting item`() {
-        viewModel.updateAndReplace(ScheduleInfo(null, viewModel.getDate(0), "", "", "", "", emptyList()))
+        viewModel.updateAndReplace(ScheduleInfo(null, viewModel.getDate(0), "", "", "", "", mutableListOf()))
     }
 
     @Test
     fun `delete item`() {
-        val scheduleInfo = ScheduleInfo(null, viewModel.getDate(0), "", "", "", "", emptyList())
+        val scheduleInfo = ScheduleInfo(null, viewModel.getDate(0), "", "", "", "", mutableListOf())
         viewModel.updateAndReplace(scheduleInfo)
         viewModel.deleteSchedule(scheduleInfo)
     }
 
     @Test
     fun `get schedule list`() {
-        val scheduleInfo = ScheduleInfo(null, viewModel.getDate(0), "", "", "", "", emptyList())
+        val scheduleInfo = ScheduleInfo(null, viewModel.getDate(0), "", "", "", "", mutableListOf())
         viewModel.updateAndReplace(scheduleInfo)
     }
 

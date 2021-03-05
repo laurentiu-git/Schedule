@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.data.models.ScheduleInfo
 import com.example.schedule.databinding.ItemScheduleBinding
+import com.example.schedule.ui.adapters.ScheduleAdapter.ScheduleAdapterViewHolder.Companion.onAddItemClickListener
 import com.example.schedule.ui.adapters.ScheduleAdapter.ScheduleAdapterViewHolder.Companion.onItemClickListener
 import javax.inject.Inject
 
@@ -17,6 +18,10 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
 
     fun setOnItemClickListener(listener: (Int) -> Unit) {
         onItemClickListener = listener
+    }
+
+    fun setOnAddClickListener(listener: (ScheduleInfo) -> Unit) {
+        onAddItemClickListener = listener
     }
 
     class ScheduleAdapterViewHolder constructor(private val binding: ItemScheduleBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -37,7 +42,7 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
                 clickListener(binding.addTask.isVisible)
             }
 
-            binding.extraTaskName.setOnFocusChangeListener { v, hasFocus ->
+            binding.extraTaskName.setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
                     onItemClickListener?.let {
                         it(adapterPosition)
@@ -50,10 +55,24 @@ class ScheduleAdapter @Inject constructor() : RecyclerView.Adapter<ScheduleAdapt
                 adapter = taskListAdapter
                 layoutManager = LinearLayoutManager(binding.listView.context)
             }
+
+            binding.addTask.setOnClickListener {
+                val text = binding.extraTaskName.text.toString()
+                val addTaskList = mutableListOf(text)
+                val newScheduleList = schedule.taskList + addTaskList
+                taskListAdapter.differ.submitList(newScheduleList)
+                binding.listView.adapter?.notifyItemChanged(newScheduleList.size)
+                binding.extraTaskName.text.clear()
+                schedule.taskList = newScheduleList as MutableList<String>
+                onAddItemClickListener?.let {
+                    it(schedule)
+                }
+            }
         }
 
         companion object {
             var onItemClickListener: ((Int) -> Unit)? = null
+            var onAddItemClickListener: ((ScheduleInfo) -> Unit)? = null
 
             fun from(parent: ViewGroup): ScheduleAdapterViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)

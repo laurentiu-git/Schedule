@@ -15,5 +15,5 @@ data class ScheduleInfo(
     var endTime: String,
     var taskName: String,
     var location: String,
-    var taskList: List<String>,
+    var taskList: MutableList<String>,
 )

@@ -74,6 +74,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                 context?.let { it1 -> hideKeyboardFrom(it1, view) }
             }
         }
+
+        scheduleAdapter.setOnAddClickListener {
+            homeScheduleViewModel.updateAndReplace(it)
+        }
+
         binding.addEvent.setOnClickListener {
             val animation = AddEventTransition(binding.addEvent, binding.entryEvent)
             animation.openCalendar()
