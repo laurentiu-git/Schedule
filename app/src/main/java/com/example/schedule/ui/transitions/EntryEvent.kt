@@ -22,10 +22,15 @@ import com.example.schedule.util.Constants
 import com.example.schedule.util.EntryEventListener
 import com.example.schedule.util.LocationListener
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.* //ktlint-disable
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class EntryEvent : FrameLayout {
+class EntryEvent @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
 
     private var entryEvent: EntryEventListener? = null
     @Inject
@@ -37,18 +42,7 @@ class EntryEvent : FrameLayout {
 
     private var fragmentBinding: AddEventFragmentBinding? = null
 
-    constructor(context: Context) : super(context) {
-        init()
-    }
-
-    constructor(
-        context: Context,
-        attrs: AttributeSet
-    ) : super(context, attrs) {
-        init()
-    }
-
-    private fun init() {
+    init {
         val view = View.inflate(context, R.layout.add_event_fragment, this)
         val binding = AddEventFragmentBinding.bind(view)
         fragmentBinding = binding
@@ -104,14 +98,12 @@ class EntryEvent : FrameLayout {
             val minutesEnd = minutesAdapter.getTimeMinutes(snapHelper.getSnapPosition(binding.minutesTimeForEnd))
             val schedule = ScheduleInfo(
                 null,
-                "",
-                "",
-                "",
+                Calendar.getInstance().time,
                 "$hour:$minutes",
                 "$hourEnd:$minutesEnd",
                 binding.titleText.text.toString(),
-                binding.description.text.toString(),
-                ""
+                "",
+                mutableListOf(binding.firstTaskEvent.text.toString())
             )
             entryEvent?.addSchedule(schedule)
             hideKeyboardFrom(context, it)
@@ -122,9 +114,13 @@ class EntryEvent : FrameLayout {
             entryEvent?.searchLocation()
         }
 
-        val homeFragment = getForegroundFragment() as HomeFragment
+        val fragment = getForegroundFragment()
 
-        homeFragment.setLocation(
+        val homeFragment = fragment?.let {
+            it as HomeFragment
+        }
+
+        homeFragment?.setLocation(
             object : LocationListener {
                 override fun setLocation(location: String) {
                     binding.location.text = location

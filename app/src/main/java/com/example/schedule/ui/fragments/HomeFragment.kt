@@ -1,13 +1,16 @@
 package com.example.schedule.ui.fragments
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.DatePicker
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -28,27 +31,29 @@ import com.example.schedule.viewmodels.HomeScheduleViewModel
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
-import java.util.* //ktlint-disable
+import java.util.* // ktlint-disable
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSetListener {
     private var fragmentBinding: FragmentHomeBinding? = null
+
     lateinit var homeScheduleViewModel: HomeScheduleViewModel
     @Inject
     lateinit var scheduleAdapter: ScheduleAdapter
-    val AUTOCOMPLETE_REQUEST_CODE = 1
+
     private var location: String = ""
     private var locationListener: LocationListener? = null
-    private val cal = Calendar.getInstance()
-    private lateinit var currentDate: String
 
+    @Inject
+    lateinit var cal: Calendar
+
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHomeBinding.bind(view)
@@ -63,8 +68,16 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
 
         val bottomNav = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
-        val simpleDateFormat = SimpleDateFormat("EEE, MMM d", Locale.getDefault())
-        currentDate = simpleDateFormat.format(Date())
+        scheduleAdapter.setOnItemClickListener {
+            bottomNav?.isVisible = false
+            if (it == -1) {
+                context?.let { it1 -> hideKeyboardFrom(it1, view) }
+            }
+        }
+
+        scheduleAdapter.setOnAddClickListener {
+            homeScheduleViewModel.updateAndReplace(it)
+        }
 
         binding.addEvent.setOnClickListener {
             val animation = AddEventTransition(binding.addEvent, binding.entryEvent)
@@ -81,21 +94,28 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                 }
 
                 override fun addSchedule(schedule: ScheduleInfo) {
-                    val year = cal.get(Calendar.YEAR).toString()
-                    val month = cal.get(Calendar.MONTH).toString()
-                    val day = cal.get(Calendar.DAY_OF_MONTH).toString()
                     val scheduleInfo = ScheduleInfo(
                         null,
-                        year,
-                        month,
-                        day,
+                        homeScheduleViewModel.getDate(0),
                         schedule.startTime,
                         schedule.endTime,
                         schedule.taskName,
-                        schedule.description,
-                        location
+                        location,
+                        schedule.taskList
                     )
                     homeScheduleViewModel.updateAndReplace(scheduleInfo)
+                }
+
+                val resultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+                    if (result.resultCode == Activity.RESULT_OK) {
+                        // There are no request codes
+                        val data: Intent? = result.data
+                        val place = data?.let { Autocomplete.getPlaceFromIntent(it) }
+                        place?.name?.let {
+                            location = it
+                        }
+                        locationListener?.setLocation(location)
+                    }
                 }
 
                 override fun searchLocation() {
@@ -108,7 +128,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
                         Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                             .build(it)
                     }
-                    startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
+                    resultLauncher.launch(intent)
                 }
             }
         )
@@ -135,18 +155,25 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
 
         binding.arrowLeft.setOnClickListener {
             val previousDay = -1
-            binding.dayId.text = getDay(previousDay)
-            homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+            homeScheduleViewModel.getDate(previousDay)
         }
 
         binding.arrowRight.setOnClickListener {
             val nextDay = 1
-            binding.dayId.text = getDay(nextDay)
-            homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+            homeScheduleViewModel.getDate(nextDay)
         }
 
-        homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
-        homeScheduleViewModel.schedule.observe(
+        homeScheduleViewModel.getDate(0)
+        homeScheduleViewModel.date.observe(
+            viewLifecycleOwner,
+            { result ->
+                val dateFormat = SimpleDateFormat("EEE, MMM d", Locale.getDefault())
+                binding.dayId.text = dateFormat.format(result)
+            }
+        )
+
+        homeScheduleViewModel.currentScheduleList()
+        homeScheduleViewModel.scheduleList.observe(
             viewLifecycleOwner,
             { result ->
                 scheduleAdapter.differ.submitList(result)
@@ -157,14 +184,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
             object : OnSwipeTouchListener(view.context) {
                 override fun onSwipeLeft() {
                     val nextDay = 1
-                    binding.dayId.text = getDay(nextDay)
-                    homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+                    homeScheduleViewModel.getDate(nextDay)
                 }
 
                 override fun onSwipeRight() {
                     val previousDay = -1
-                    binding.dayId.text = getDay(previousDay)
-                    homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
+                    homeScheduleViewModel.getDate(previousDay)
                 }
             }
         )
@@ -196,58 +221,18 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
     }
 
     private fun pickDate(view: View) {
-        val year = cal.get(Calendar.YEAR)
-        val month = cal.get(Calendar.MONTH)
-        val day = cal.get(Calendar.DAY_OF_MONTH)
-        DatePickerDialog(view.context, this, year, month, day).show()
+        DatePickerDialog(
+            view.context,
+            this,
+            cal.get(Calendar.YEAR),
+            cal.get(Calendar.MONTH),
+            cal.get(Calendar.DAY_OF_MONTH)
+        ).show()
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         cal.set(year, month, dayOfMonth)
-        fragmentBinding?.dayId?.text = getCurrentDate(cal.time)
-        homeScheduleViewModel.schedule(cal.get(Calendar.DAY_OF_MONTH).toString())
-    }
-
-    private fun getDay(position: Int): String {
-        cal.add(Calendar.DATE, position)
-        return if (currentDate != getCurrentDate(cal.time))
-            getCurrentDate(cal.time)
-        else
-            "Today"
-    }
-
-    private fun getCurrentDate(date: Date): String {
-        val dateFormat = SimpleDateFormat("EEE, MMM d", Locale.getDefault())
-        return dateFormat.format(date)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            when (resultCode) {
-                Activity.RESULT_OK -> {
-                    data?.let {
-                        val place = Autocomplete.getPlaceFromIntent(data)
-                        Log.i("TAG", "Place: ${place.name}, ${place.id}")
-                        place.name?.let {
-                            location = it
-                        } ?: ""
-                        locationListener?.setLocation(location)
-                    }
-                }
-                AutocompleteActivity.RESULT_ERROR -> {
-                    // TODO: Handle the error.
-                    data?.let {
-                        val status = Autocomplete.getStatusFromIntent(data)
-                        status.statusMessage?.let { it1 -> Log.i("TAG", it1) }
-                    }
-                }
-                Activity.RESULT_CANCELED -> {
-                    // The user canceled the operation.
-                }
-            }
-            return
-        }
-        super.onActivityResult(requestCode, resultCode, data)
+        homeScheduleViewModel.getDate(0)
     }
 
     override fun onDestroyView() {
@@ -256,7 +241,15 @@ class HomeFragment : Fragment(R.layout.fragment_home), DatePickerDialog.OnDateSe
         this.locationListener = null
         fragmentBinding = null
     }
+
     fun setLocation(locationListener: LocationListener) {
         this.locationListener = locationListener
+    }
+
+    private fun hideKeyboardFrom(context: Context, view: View) {
+        val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (imm.isAcceptingText) {
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 }
