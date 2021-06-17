@@ -1,8 +1,8 @@
 # Schedule
 ![Android CI](https://github.com/laurentiu-git/Schedule/workflows/Android%20CI/badge.svg?branch=master)
 
-## GIF's
+## GIF
 
 <p align="center">
-  <img src="https://media.giphy.com/media/AisUN2p7Js4dk2pzgy/source.gif" />
+  <img src="https://media.giphy.com/media/6I3dR4JEYtDV3eQ5EW/giphy.gif" />
 </p>
